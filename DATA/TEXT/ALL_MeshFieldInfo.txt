@@ -1,0 +1,18 @@
+
+SCRIPT
+
+NUMBER = 5
+
+
+FILENAME = DATA/TEXT/MESHFIELD/MeshFiledInfo_GameFloor.txt
+
+FILENAME = DATA/TEXT/MESHFIELD/MeshFiledInfo_GameMagma.txt
+
+FILENAME = DATA/TEXT/MESHFIELD/MeshFiledInfo_Select.txt
+
+FILENAME = DATA/TEXT/MESHFIELD/MeshFiledInfo_TutorialFloor.txt
+
+FILENAME = DATA/TEXT/MESHFIELD/MeshFiledInfo_TutorialMagma.txt
+
+END_SCRIPT
+

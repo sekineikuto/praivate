@@ -1,0 +1,29 @@
+//-----------------------------------------------------
+// ボット情報
+//-----------------------------------------------------
+
+SCRIPT
+
+NUMPARTS = 1
+
+SETSTATUS
+{
+	SPEED = 0.3
+	INERTIAVALU = 0.05
+	FLOATINGCOfE = 0.1
+	FLOATINGRANGLERATE = 0.04
+	FLLOWUPDIST = 150.0
+	TURNCOFE = 0.15
+}
+
+SETOFFSET
+{
+	PARTSSET						# [0]体
+		INDEX = 0
+		PARENT = -1					# (親)NULL
+		POS = 0.0 40.0 0.0
+		ROT = 0.0 00.0 0.0
+	END_PARTSSET
+}
+
+END_SCRIPT
