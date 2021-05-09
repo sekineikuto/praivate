@@ -198,6 +198,8 @@
     <ClInclude Include="SourceCode\myhash.h" />
     <ClInclude Include="SourceCode\myhash_chain.h" />
     <ClInclude Include="SourceCode\Mylibrary.h" />
+    <ClInclude Include="SourceCode\mystd.h" />
+    <ClInclude Include="SourceCode\mystd_utility.h" />
     <ClInclude Include="SourceCode\number.h" />
     <ClInclude Include="SourceCode\orbit.h" />
     <ClInclude Include="SourceCode\renderer.h" />

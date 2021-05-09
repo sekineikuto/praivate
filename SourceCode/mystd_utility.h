@@ -1,37 +1,38 @@
 //*************************************************************************************************************
 //
-// 2DUI処理[2DUI.h]
-// Author : Sekine Ikuto
+// 自作の標準ライブラリのユーティリティ処理 [mystd_utility.h]
+// Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
-#ifndef _2DUI_H_
-#define _2DUI_H_
+#ifndef _MYSTD_UTILITY_H_
+#define _MYSTD_UTILITY_H_
 
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "Scene2D.h"
-#include "UISetingTypes.h"
+#include "mystd.h"
 
 //-------------------------------------------------------------------------------------------------------------
-// クラス定義
+// マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-class C2DUi : public CScene2D
+
+//-------------------------------------------------------------------------------------------------------------
+// 名前空間定義
+//-------------------------------------------------------------------------------------------------------------
+_BEGIN_MYSTD
+
+// *Can be halved by multiplication
+float fHalfSize = 0.5f;
+
+// *Half of pi
+float fHalf_PI = D3DX_PI * fHalfSize;
+
+// *Returns half the value set in the argument
+template<class T>
+T half(T& rsc)
 {
-public:
-	C2DUi() : CScene2D(PRIORITY_2DUI) {}
-	C2DUi(PRIORITY pri) : CScene2D(pri) {}												// コンストラクタ
-	~C2DUi() {}																			// デストラクタ
+	return rsc * fHalfSize;
+}
 
-	static C2DUi * Create(ui2d::SETING2DUI &seting, PRIORITY pri = PRIORITY_2DUI);			// 生成
-	void Init(ui2d::SETING2DUI &seting, PRIORITY pri);										// 初期化
-	void Init(void);																	// 初期化
-	void Uninit(void);																	// 終了
-	void Update(void);																	// 更新
-	void Draw(void);																	// 描画
-
-protected:
-};
-
-
-#endif
+_END_MYSTD
+#endif // _MYSTD_H_

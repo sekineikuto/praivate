@@ -1,37 +1,22 @@
 //*************************************************************************************************************
 //
-// 2DUI処理[2DUI.h]
-// Author : Sekine Ikuto
+// 軌道処理 [orbit.h]
+// Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
-#ifndef _2DUI_H_
-#define _2DUI_H_
+#ifndef _MYSTD_H_
+#define _MYSTD_H_
 
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "Scene2D.h"
-#include "UISetingTypes.h"
+#include <stdio.h>
+#include <iostream>
 
 //-------------------------------------------------------------------------------------------------------------
-// クラス定義
+// マクロ定義
 //-------------------------------------------------------------------------------------------------------------
-class C2DUi : public CScene2D
-{
-public:
-	C2DUi() : CScene2D(PRIORITY_2DUI) {}
-	C2DUi(PRIORITY pri) : CScene2D(pri) {}												// コンストラクタ
-	~C2DUi() {}																			// デストラクタ
+#define _BEGIN_MYSTD namespace mystd {
+#define _END_MYSTD }
 
-	static C2DUi * Create(ui2d::SETING2DUI &seting, PRIORITY pri = PRIORITY_2DUI);			// 生成
-	void Init(ui2d::SETING2DUI &seting, PRIORITY pri);										// 初期化
-	void Init(void);																	// 初期化
-	void Uninit(void);																	// 終了
-	void Update(void);																	// 更新
-	void Draw(void);																	// 描画
-
-protected:
-};
-
-
-#endif
+#endif // _MYSTD_H_
