@@ -96,6 +96,7 @@ private:
 	static CScene* m_pCur[PRIORITY_MAX];		// 現在(最後尾)オブジェクトへのポインタ
 	CScene*        m_pPrev;						// 前のオブジェクトへのポインタ
 	CScene*        m_pNext;						// 次のオブジェクトへのポインタ
+	static std::list<CScene*> m_list[PRIORITY_MAX];	// シーンオブジェクトのリスト
 	bool           m_bDie;						// 死亡フラグ
 	int            m_nPriority;					// 描画順
 protected:

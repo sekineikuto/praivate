@@ -15,13 +15,14 @@
 int CScene::m_nNumAll = 0;
 CScene *CScene::m_pTop[PRIORITY::PRIORITY_MAX] = {};		// 先頭へのオブジェクトポインタ
 CScene *CScene::m_pCur[PRIORITY::PRIORITY_MAX] = {};		// 現在(最後尾)オブジェクトへのポインタ
-
+std::list<CScene*> CScene::m_list[PRIORITY_MAX];
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ
 //-------------------------------------------------------------------------------------------------------------
 CScene::CScene(PRIORITY order)
 {
+
 	this->m_nPriority = order;		//描画優先順位の番号
 	m_priority = order;
 
@@ -44,6 +45,9 @@ CScene::CScene(PRIORITY order)
 
 	m_pCur[m_nPriority] = this;
 	m_nNumAll++;
+
+	// リスト型に挿入する
+	m_list[order].push_back(this);
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -58,33 +62,58 @@ CScene::~CScene()
 //-------------------------------------------------------------------------------------------------------------
 void CScene::UpdataAll(void)
 {
-	for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//{
+	//	if (m_pTop[nCntPriority] != nullptr)
+	//	{
+	//		CScene * pScene = m_pTop[nCntPriority];
+	//		while (pScene != nullptr)
+	//		{
+	//			CScene * pSceneNext = pScene->m_pNext;
+	//			pScene->Update();
+	//			pScene = pSceneNext;
+	//		}
+	//	}
+	//}
+
+	//for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//{
+	//	if (m_pTop[nCntPriority] != nullptr)
+	//	{
+	//		CScene * pScene = m_pTop[nCntPriority];
+	//		while (pScene != nullptr)
+	//		{
+	//			CScene * pSceneNext = pScene->m_pNext;
+	//			if (pScene->m_bDie)
+	//			{
+	//				pScene->ListRelease();
+	//			}
+	//			pScene = pSceneNext;
+	//		}
+	//	}
+	//}
+
+	for (auto list : m_list)
 	{
-		if (m_pTop[nCntPriority] != nullptr)
+		for (auto scene : list)
 		{
-			CScene * pScene = m_pTop[nCntPriority];
-			while (pScene != nullptr)
-			{
-				CScene * pSceneNext = pScene->m_pNext;
-				pScene->Update();
-				pScene = pSceneNext;
-			}
+			scene->Update();
 		}
 	}
 
-	for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	for (auto list : m_list)
 	{
-		if (m_pTop[nCntPriority] != nullptr)
+		for (auto it = list.begin(); it != list.end();)
 		{
-			CScene * pScene = m_pTop[nCntPriority];
-			while (pScene != nullptr)
+			if (((CScene *)it._Ptr)->m_bDie)
 			{
-				CScene * pSceneNext = pScene->m_pNext;
-				if (pScene->m_bDie)
-				{
-					pScene->ListRelease();
-				}
-				pScene = pSceneNext;
+				// 削除された要素の次を指すイテレータが返される。
+				it = list.erase(it);
+			}
+			// 要素削除をしない場合に、イテレータを進める
+			else
+			{
+				++it;
 			}
 		}
 	}
@@ -95,17 +124,24 @@ void CScene::UpdataAll(void)
 //-------------------------------------------------------------------------------------------------------------
 void CScene::DrawAll(void)
 {
-	for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//{
+	//	if (m_pTop[nCntPriority] != nullptr)
+	//	{
+	//		CScene * pScene = m_pTop[nCntPriority];
+	//		while (pScene != nullptr)
+	//		{
+	//			CScene * pSceneNext = pScene->m_pNext;
+	//			pScene->Draw();
+	//			pScene = pSceneNext;
+	//		}
+	//	}
+	//}
+	for (auto list : m_list)
 	{
-		if (m_pTop[nCntPriority] != nullptr)
+		for (auto scene : list)
 		{
-			CScene * pScene = m_pTop[nCntPriority];
-			while (pScene != nullptr)
-			{
-				CScene * pSceneNext = pScene->m_pNext;
-				pScene->Draw();
-				pScene = pSceneNext;
-			}
+			scene->Draw();
 		}
 	}
 }
@@ -115,17 +151,25 @@ void CScene::DrawAll(void)
 //-------------------------------------------------------------------------------------------------------------
 void CScene::ReleaseAll(void)
 {
-	for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//for (int nCntPriority = 0; nCntPriority < PRIORITY::PRIORITY_MAX; nCntPriority++)
+	//{
+	//	if (m_pTop[nCntPriority] != nullptr)
+	//	{
+	//		CScene * pScene = m_pTop[nCntPriority];
+	//		while (pScene != nullptr)
+	//		{
+	//			CScene * pSceneNext = pScene->m_pNext;
+	//			pScene->ListRelease();
+	//			pScene = pSceneNext;
+	//		}
+	//	}
+	//}
+
+	for (auto list : m_list)
 	{
-		if (m_pTop[nCntPriority] != nullptr)
+		for (auto it = list.begin(); it != list.end();)
 		{
-			CScene * pScene = m_pTop[nCntPriority];
-			while (pScene != nullptr)
-			{
-				CScene * pSceneNext = pScene->m_pNext;
-				pScene->ListRelease();
-				pScene = pSceneNext;
-			}
+			it = list.erase(it);
 		}
 	}
 }
