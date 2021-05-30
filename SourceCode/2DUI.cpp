@@ -28,6 +28,7 @@ void C2DUi::Init(ui2d::SETING2DUI & seting, PRIORITY pri)
 {
 	CScene2D::SetOriginType((ORIGINVERTEXTYPE)seting.nOriginType);
 	CScene2D::SetPosition(seting.pos);
+	CScene2D::SetColor(seting.col);
 	CScene2D::SetRotation(seting.fRotation);
 	CScene2D::SetSize(seting.size);
 	CScene2D::BindTexture(CTexture::GetTextureInfo(seting.nTextureID));
@@ -54,7 +55,7 @@ void C2DUi::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void C2DUi::Update(void)
 {
-	Ckeyboard key = CManager::GetKeyboard();
+	Ckeyboard& key = CManager::GetKeyboard();
 
 	if (key.GetTrigger(DIK_H))
 	{

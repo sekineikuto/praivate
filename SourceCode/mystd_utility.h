@@ -27,11 +27,11 @@ float fHalfSize = 0.5f;
 // *Half of pi
 float fHalf_PI = D3DX_PI * fHalfSize;
 
-// *Returns half the value set in the argument
+// *Prints half the value of the argument set in rsc
 template<class T>
-T half(T& rsc)
+void Convert_to_half_size(T& out,T& rsc)
 {
-	return rsc * fHalfSize;
+	out = rsc * fHalfSize;
 }
 
 _END_MYSTD

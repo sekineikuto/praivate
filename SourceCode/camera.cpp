@@ -52,32 +52,30 @@ void CCamera::Init(void)
 	// 構造体の初期化
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_move = D3DXVECTOR3(1.0f, 1.0f, 1.0f);
+
 	// 選択モードの時
-	if (CManager::GetMode() == CManager::MODE_SELECT)
+	switch (CManager::GetMode())
 	{
+	case CManager::MODE_SELECT:
 		m_rot = CAMERA_ROT_SETSELECT;
 		m_HeadPos = CAMERA_HEADPOS_SETSELECT;
 		m_fMagnificat = CAMERA_MAGNIFICAT_SETSELECT;
-	}
-	// タイトルモードの時
-	else if (CManager::GetMode() == CManager::MODE_TITLE)
-	{
+		break;
+	case CManager::MODE_TITLE:
 		m_rot = CAMERA_ROT_UNSET;
 		m_HeadPos = CAMARA_INITPOS_TITLE;
 		m_fMagnificat = CAMERA_MAGNIFICAT_SETTITLE;
-	}
-	// リザルトモードの時
-	else if (CManager::GetMode() == CManager::MODE_RESULT)
-	{
+		break;
+	case CManager::MODE_RESULT:
 		m_rot = CAMERA_ROT_UNSET;
 		m_HeadPos = CAMARA_INITPOS_TITLE;
 		m_fMagnificat = CAMERA_MAGNIFICAT_SETRESULT;
-	}
-	else
-	{// その他の時
+		break;
+	default:
 		m_rot = CAMERA_ROT_UNSET;
 		m_HeadPos = CAMERA_HEADPOS_UNSET;
 		m_fMagnificat = CAMERA_MAGNIFICAT_UNSET;
+		break;
 	}
 	// 長さ
 	m_fLength = sqrtf(CAMERA_V_POS_X*CAMERA_V_POS_Y*CAMERA_V_POS_Z) / 3;	// / xyz分
@@ -181,8 +179,8 @@ void CCamera::Set(void)
 void CCamera::Operation(void)
 {
 	// キーボードの取得
-	Ckeyboard *pKeyboard = &CManager::GetKeyboard();
-	CGamepad *pGamepad = &CManager::GetGamepad();
+	Ckeyboard *pKeyboard = CManager::GetKeyboardPtr();
+	CGamepad *pGamepad = CManager::GetGamepadPtr();
 	// カメラの公転
 	if (pKeyboard->GetPress(DIK_RIGHTARROW))
 	{

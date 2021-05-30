@@ -191,16 +191,6 @@ typedef enum
 	ORIGINVERTEXTYPE_UPPERLEFT,			// 左上
 	ORIGINVERTEXTYPE_UPPERCENTER,		// 中央上
 	ORIGINVERTEXTYPE_UPPERRIGHT,		// 右上
-	ORIGINVERTEXTYPE_ROTATION = 10,		// 回転中央
-	ORIGINVERTEXTYPE_ROTLOWERLEFT,		// 回転左下
-	ORIGINVERTEXTYPE_ROTLOWERCENTER,	// 回転中央下
-	ORIGINVERTEXTYPE_ROTLOWERRIGHT,		// 回転右下
-	ORIGINVERTEXTYPE_ROTCENTERLEFT,		// 回転左中央
-	ORIGINVERTEXTYPE_ROTCENTER,			// 回転中央
-	ORIGINVERTEXTYPE_ROTCENTERRIGHT,	// 回転右中央
-	ORIGINVERTEXTYPE_ROTUPPERLEFT,		// 回転左上
-	ORIGINVERTEXTYPE_ROTUPPERCENTER,	// 回転中央上
-	ORIGINVERTEXTYPE_ROTUPPERRIGHT,		// 回転右上
 	ORIGINVERTEXTYPE_MAX				// 最大数
 } ORIGINVERTEXTYPE;
 
@@ -1212,11 +1202,6 @@ public:
 	//* [in] 位置A,位置B, 大きさA, 大きさB
 	//* [return] bool （true 接触している、false 接触していない）
 	static bool Test2DCollisionRect(D3DXVECTOR3 *posA, D3DXVECTOR3 *posB, D3DXVECTOR2 *sizeA = NULL, D3DXVECTOR2 *sizeB = NULL);
-
-	//* [contents] 頂点位置の設定
-	//* [in] 原点タイプ, 位置, 大きさ, 半径, 回転量
-	//* [out] 頂点位置
-	static void SetVatexPostion(D3DXVECTOR3 **ppOut, ORIGINVERTEXTYPE type, D3DXVECTOR3 *pPos, D3DXVECTOR2 *pSize, float fRadius = 0.0f, float fRotation = 0.0f);
 
 	//-------------------------------------------------------------------------------------------------------------
 	// 3D

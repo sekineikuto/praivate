@@ -84,17 +84,46 @@ public:
 	static void SetMode(MODE mode);																			// モードの設定
 
 	/*　インライン関数 */
-	static void       SetTotalScore(int nMyScore) { m_nMyScore = nMyScore; }	// トータルスコアの設定
-	static MODE&      GetMode(void)               { return m_mode; }			// モードの取得
-	static CRenderer& GetRenderer(void)           { return m_Renderer; }		// レンダラーの取得
-	static Ckeyboard& GetKeyboard(void)           { return m_Keyboard; }		// キーボードの取得
+	static MODE       GetMode(void)               { return m_mode; }			// モードの取得
+	static MODE&      GetModeRef(void)            { return m_mode; }			// モード参照の取得
+	static MODE*      GetModePtr(void)            { return &m_mode; }			// モーポインタの取得
+
+	static CRenderer& GetRenderer(void)           { return m_Renderer; }		// レンダラー参照の取得
+	static CRenderer& GetRendererRef(void)        { return m_Renderer; }		// レンダラー参照の取得
+	static CRenderer* GetRendererPtr(void)        { return &m_Renderer; }		// レンダラーポインタの取得
+
+	static Ckeyboard& GetKeyboard(void)           { return m_Keyboard; }		// キーボード参照の取得
+	static Ckeyboard& GetKeyboardRef(void)        { return m_Keyboard; }		// キーボード参照の取得
+	static Ckeyboard* GetKeyboardPtr(void)        { return &m_Keyboard; }		// キーボードポインタの取得
+
 	static CGamepad&  GetGamepad(void)            { return m_Gamepad; }			// ゲームパッドの取得
+	static CGamepad&  GetGamepadRef(void)         { return m_Gamepad; }			// ゲームパッドの取得
+	static CGamepad*  GetGamepadPtr(void)         { return &m_Gamepad; }			// ゲームパッドの取得
+
 	static CMouse&    GetMouse(void)              { return m_Mouse; }			// マウスの取得
+	static CMouse&    GetMouseRef(void)           { return m_Mouse; }			// マウスの取得
+	static CMouse*    GetMousePtr(void)           { return &m_Mouse; }			// マウスの取得
+
 	static CCamera&   GetCamera(void)             { return m_Camera; }			// カメラの取得
-	static int&       GetTotalScore(void)         { return m_nMyScore; }		// トータルスコアの取得
+	static CCamera&   GetCameraRef(void)          { return m_Camera; }			// カメラの取得
+	static CCamera*   GetCameraPtr(void)          { return &m_Camera; }			// カメラの取得
+
 	static CLight&    GetLight(void)              { return m_Light; }			// ライトの取得
+	static CLight&    GetLightRef(void)           { return m_Light; }			// ライトの取得
+	static CLight*    GetLightPtr(void)           { return &m_Light; }			// ライトの取得
+
 	static CSound&    GetSound(void)              { return m_Sound; }			// サウンドの取得
-	static CMode&     GetModeClass(void)          {return *m_pModeClass; }		// モードクラスの取得
+	static CSound&    GetSoundRef(void)           { return m_Sound; }			// サウンドの取得
+	static CSound*    GetSoundPtr(void)           { return &m_Sound; }			// サウンドの取得
+
+	static CMode&     GetModeClass(void)          { return *m_pModeClass; }		// モードクラスの取得
+	static CMode*     GetModeClassPtr(void)       { return m_pModeClass; }		// モードクラスの取得
+
+	static void       SetTotalScore(const int nMyScore) { m_nMyScore = nMyScore; }	// トータルスコアの設定
+	static int        GetTotalScore(void)         { return m_nMyScore; }		// トータルスコアの取得
+	static int&       GetTotalScoreRef(void)      { return m_nMyScore; }		// トータルスコアの取得
+	static int*       GetTotalScorePtr(void)      { return &m_nMyScore; }		// トータルスコアの取得
+
 #ifdef _DEBUG
 	void SetFPS(int nFps);												// FPSの設定
 #endif
