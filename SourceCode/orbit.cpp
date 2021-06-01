@@ -83,7 +83,7 @@ void COrbit::Init(void)
 	// インデックス情報の作成
 	MakeIndex(pDevice);
 
-	m_pPosOld = new D3DXVECTOR3[m_nNumWidht];		// 前回の位置
+	m_pPosOld     = new D3DXVECTOR3[m_nNumWidht];		// 前回の位置
 	m_pPosEdgeOld = new D3DXVECTOR3[m_nNumWidht];	// 切っ先の前回の位置
 }
 
@@ -136,6 +136,7 @@ void COrbit::Update(void)
 		pVtx[nCntOrbit + 1].pos = m_pPosEdgeOld[nCntOrbit];
 		pVtx[nCntOrbit + m_nNumWidht + 2].pos  = m_pPosOld[nCntOrbit];
 	}
+
 	for (int nCntOld = m_nNumWidht - 1; nCntOld > 0; nCntOld--)
 	{
 		m_pPosEdgeOld[nCntOld] = m_pPosEdgeOld[nCntOld - 1];
