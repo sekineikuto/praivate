@@ -41,7 +41,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-	//_CrtSetBreakAlloc(164);
+	//_CrtSetBreakAlloc(375);
 	WNDCLASSEX wcex =
 	{
 		sizeof(WNDCLASSEX),				// WNDCLASSEXのメモリサイズの指定
@@ -161,7 +161,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine
 
 	// 分解能を戻す
 	timeEndPeriod(1);
-
 	_CrtDumpMemoryLeaks();
 	return (int)msg.wParam;
 }

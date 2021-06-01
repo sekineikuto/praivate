@@ -67,7 +67,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	{
 		return -1;
 	}
-
 	// UI2D‚ğg‚¤éŒ¾
 	ui2d::CFunctions::DeclarationToUse();
 
