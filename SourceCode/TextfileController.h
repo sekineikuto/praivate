@@ -237,6 +237,7 @@ private:
 				info.entrydata = (STRING)(void*)pDataStart;
 			}
 
+			
 			// “o˜^ƒf[ƒ^‚Ìæ“¾ğŒ®
 			funk(info, value);
 		}

@@ -34,6 +34,7 @@ class CLight;
 class CGamepad;
 class CHash;
 class CMode;
+class CTextureManager;
 class CManager
 {
 public:
@@ -124,6 +125,8 @@ public:
 	static int&       GetTotalScoreRef(void)      { return m_nMyScore; }		// トータルスコアの取得
 	static int*       GetTotalScorePtr(void)      { return &m_nMyScore; }		// トータルスコアの取得
 
+	static CTextureManager* GetTextureManager(void) { return m_pTextureManager; }
+
 #ifdef _DEBUG
 	void SetFPS(int nFps);												// FPSの設定
 #endif
@@ -142,6 +145,7 @@ private:
 	static int			m_nMyScore;							// スコア保存
 	static CHash		m_Hash;							// ハッシュポインタ
 	static CMode*		m_pModeClass;					// モードクラスのポインタ
+	static CTextureManager * m_pTextureManager;			// テクスチャマネージャー
 protected:
 };
 

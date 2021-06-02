@@ -23,6 +23,7 @@
 #include "mode.h"
 #include "title.h"
 #include "UISetingTypes.h"
+#include "TextureManager.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -40,6 +41,7 @@ CManager::MODE	CManager::m_mode                           = CManager::MODE_NONE;
 int				CManager::m_nMyScore                       = MYLIB_INT_UNSET;				// スコア保存
 CHash			CManager::m_Hash                           = MYLIB_INITSTRUCT_WITHCONST;	// ハッシュポインタ
 CMode*			CManager::m_pModeClass                     = nullptr;						// モードクラスのポインタ
+CTextureManager * CManager::m_pTextureManager = nullptr;
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -100,6 +102,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 	// テクスチャの読み込み
 	CTexture::Load();
+	m_pTextureManager = new CTextureManager;
+	m_pTextureManager->Load();
 	// モデルの読み込み
 	//CModel::Load();
 	return S_OK;
@@ -115,6 +119,10 @@ void CManager::Uninit(void)
 	//CModel::Unload();
 	// テクスチャの開放
 	CTexture::Unload();
+
+	m_pTextureManager->Unload();
+	delete m_pTextureManager;
+	m_pTextureManager = nullptr;
 #ifdef _DEBUG
 	// デバッグの終了処理
 	m_DebugProc.Uninit();

@@ -176,6 +176,7 @@
     <ClCompile Include="SourceCode\Scene2D.cpp" />
     <ClCompile Include="SourceCode\sound.cpp" />
     <ClCompile Include="SourceCode\texture.cpp" />
+    <ClCompile Include="SourceCode\TextureManager.cpp" />
     <ClCompile Include="SourceCode\title.cpp" />
     <ClCompile Include="SourceCode\TitleUI.cpp" />
     <ClCompile Include="SourceCode\UISetingTypes.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="SourceCode\myhash_chain.h" />
     <ClInclude Include="SourceCode\Mylibrary.h" />
     <ClInclude Include="SourceCode\mystd.h" />
+    <ClInclude Include="SourceCode\mystd_types.h" />
     <ClInclude Include="SourceCode\mystd_utility.h" />
     <ClInclude Include="SourceCode\number.h" />
     <ClInclude Include="SourceCode\orbit.h" />
@@ -208,6 +210,7 @@
     <ClInclude Include="SourceCode\sound.h" />
     <ClInclude Include="SourceCode\TextfileController.h" />
     <ClInclude Include="SourceCode\texture.h" />
+    <ClInclude Include="SourceCode\TextureManager.h" />
     <ClInclude Include="SourceCode\title.h" />
     <ClInclude Include="SourceCode\TitleUI.h" />
     <ClInclude Include="SourceCode\UISetingTypes.h" />
