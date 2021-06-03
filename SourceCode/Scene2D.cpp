@@ -87,24 +87,20 @@ void CScene2D::Update(void)
 void CScene2D::Draw(void)
 {
 	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();;
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();
 
 	// 頂点バッファをストリームにバインド
 	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(CRenderer::VERTEX_2D));
 
 	// 頂点フォーマット設定
-	pDevice->SetTexture(0, nullptr);
+	pDevice->SetTexture(0, m_pTexture);
 
 	// テクスチャの設定
 	pDevice->SetFVF(FVF_VERTEX_2D);
 	if (m_bDisp)
 	{
-		// Fill Mode の設定
-		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 		// ポリゴン描画
 		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
-		// Fill Mode の設定
-		pDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 	}
 }
 

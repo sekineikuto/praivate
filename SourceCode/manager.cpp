@@ -15,7 +15,6 @@
 #include "DebugProc.h"
 #include "camera.h"
 #include "Light.h"
-#include "texture.h"
 #include "gamepad.h"
 #include "myhash.h"
 #include "renderer.h"
@@ -100,10 +99,8 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_DebugProc.Init();
 #endif // _DEBUG
 
-	// テクスチャの読み込み
-	CTexture::Load();
-	m_pTextureManager = new CTextureManager;
-	m_pTextureManager->Load();
+	// テクスチャマネージャー生成
+	m_pTextureManager = CTextureManager::Create();
 	// モデルの読み込み
 	//CModel::Load();
 	return S_OK;
@@ -114,15 +111,12 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 //------------------------------------------------------------------------------------------------------------
 void CManager::Uninit(void)
 {
+	// シーンの開放処理とサウンドの停止
 	SceneAllReleaseAndSoundStop();
 	// モデルの開放
 	//CModel::Unload();
-	// テクスチャの開放
-	CTexture::Unload();
-
-	m_pTextureManager->Unload();
-	delete m_pTextureManager;
-	m_pTextureManager = nullptr;
+	// テクスチャマネージャーの開放
+	CTextureManager::Release(m_pTextureManager);
 #ifdef _DEBUG
 	// デバッグの終了処理
 	m_DebugProc.Uninit();

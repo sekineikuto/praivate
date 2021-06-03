@@ -98,7 +98,7 @@ public:
 	bool&                   GetDispRef(void);														// 描画フラグ参照の取得
 	bool*                   GetDispPtr(void);														// 描画フラグポインタの取得
 
-protected:
+public:
 	/* -- メンバ関数 -- */
 	HRESULT                 MakeVatex(LPDIRECT3DDEVICE9 pDevice);									// 頂点の作成
 	void                    SetVatexPosition(CRenderer::VERTEX_2D *pVtx);							// 頂点位置の設定

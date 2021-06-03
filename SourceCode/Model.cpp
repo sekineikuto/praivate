@@ -8,7 +8,6 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "Model.h"
-#include "texture.h"
 #include "renderer.h"
 
 //-------------------------------------------------------------------------------------------------------------
@@ -285,13 +284,13 @@ void CModel::GetTextureIDfrom_Xfile(MODEL & Model, CONST_STRING sFileName)
 //-------------------------------------------------------------------------------------------------------------
 void CModel::SetTextureID(int& nTextureID, CONST_STRING sFileName)
 {
-	for (int nCntTexture = 0; nCntTexture < CTexture::TEXTURE_TOPID_MAX; nCntTexture++)
-	{
-		if (strcmp(sFileName, CTexture::GetFileName(nCntTexture)) == 0)
-		{
-			nTextureID = nCntTexture;
-		}
-	}
+	//for (int nCntTexture = 0; nCntTexture < CTexture::TEXTURE_TOPID_MAX; nCntTexture++)
+	//{
+	//	if (strcmp(sFileName, CTexture::GetFileName(nCntTexture)) == 0)
+	//	{
+	//		nTextureID = nCntTexture;
+	//	}
+	//}
 }
 
 //-------------------------------------------------------------------------------------------------------------

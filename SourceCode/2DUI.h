@@ -30,6 +30,8 @@ public:
 	void Update(void);																	// XV
 	void Draw(void);																	// •`‰æ
 
+private:
+
 protected:
 };
 

@@ -8,8 +8,8 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "2DUI.h"
-#include "texture.h"
 #include "keyboard.h"
+#include "TextureManager.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 生成
@@ -31,7 +31,7 @@ void C2DUi::Init(ui2d::SETING2DUI & seting, PRIORITY pri)
 	CScene2D::SetColor(seting.col);
 	CScene2D::SetRotation(seting.fRotation);
 	CScene2D::SetSize(seting.size);
-	CScene2D::BindTexture(CTexture::GetTextureInfo(seting.nTextureID));
+	CScene2D::BindTexture(CManager::GetTextureManager()->GetTextureInfo(seting.nTextureID));
 	CScene2D::Init();
 }
 

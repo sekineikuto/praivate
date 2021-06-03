@@ -71,6 +71,10 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;		// インターバル(VSyncを待って描画)
 																	//d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;	// クライアント領域を直ちに更新する
 
+	// ステンシル用設定
+	// 深度バッファの有無
+	// 深度バッファのフォーマット
+	d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8;
 
 	// Direct3Dデバイスの生成
 	// [デバイス作成制御]<描画>と<頂点処理>をハードウェアで行なう
@@ -113,7 +117,6 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	m_pD3DDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
 	m_pD3DDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// αデスティネーションカラーの指定
 
-
 	// サンプラーステートの設定
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);
 	m_pD3DDevice->SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);
@@ -124,6 +127,11 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);	// アルファブレンディング処理
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);	// 最初のアルファ引数
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);	// ２番目のアルファ引数
+
+	// ステンシルバッファの設定
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+	m_pD3DDevice->SetRenderState(D3DRS_ALPHAREF, 0x01);
 
 	CFade::Load();
 	m_pFade = CFade::Create();
@@ -180,7 +188,7 @@ void CRenderer::UpDate(void)
 void CRenderer::Draw(void)
 {
 	// バックバッファ＆Zバッファのクリア
-	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER)
+	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_STENCIL | D3DCLEAR_ZBUFFER)
 		, D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
 
 	// DirectX3Dによる描画開始
@@ -199,4 +207,57 @@ void CRenderer::Draw(void)
 
 	// バッフバッファとフロントバッファの入れ替え
 	m_pD3DDevice->Present(NULL, NULL, NULL, NULL);
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// ステンシルマスク用レンダラーステートのセットアップ
+//-------------------------------------------------------------------------------------------------------------
+void CRenderer::SetUpStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
+{
+	// ステンシルバッファ設定 => 有効
+	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
+
+	// ステンシルバッファへ描き込む参照値設定
+	pDevice->SetRenderState(D3DRS_STENCILREF, ref);
+
+	// マスク設定 => 0xff(全て真)
+	pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
+
+	// ステンシルテスト比較設定 => 必ず成功する
+	pDevice->SetRenderState(D3DRS_STENCILFUNC, cmp_func);
+
+	// ステンシルテストのテスト設定
+	pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+	pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_REPLACE);
+	pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_KEEP);
+
+	// Zバッファ設定 => 有効
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	// ZBUFFER比較設定変更 => 必ず失敗する
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_NEVER);
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// ステンシル用レンダラーステートのセットアップ
+//-------------------------------------------------------------------------------------------------------------
+void CRenderer::SetUpStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
+{
+	// Zバッファ設定 => 有効
+	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
+	// ZBUFFER比較設定変更 => (参照値 <= バッファ値)
+	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+
+	// ステンシルバッファ => 有効
+	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
+	// ステンシルバッファと比較する参照値設定 => ref
+	pDevice->SetRenderState(D3DRS_STENCILREF, ref);
+	// ステンシルバッファの値に対してのマスク設定 => 0xff(全て真)
+	pDevice->SetRenderState(D3DRS_STENCILMASK, 0xff);
+	// ステンシルテストの比較方法設定 => 
+	//		この描画での参照値 >= ステンシルバッファの参照値なら合格
+	pDevice->SetRenderState(D3DRS_STENCILFUNC, cmp_func);
+	// ステンシルテストの結果に対しての反映設定
+	pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
+	pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
+	pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
 }

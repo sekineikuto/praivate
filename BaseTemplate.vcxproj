@@ -175,7 +175,6 @@
     <ClCompile Include="SourceCode\Scene.cpp" />
     <ClCompile Include="SourceCode\Scene2D.cpp" />
     <ClCompile Include="SourceCode\sound.cpp" />
-    <ClCompile Include="SourceCode\texture.cpp" />
     <ClCompile Include="SourceCode\TextureManager.cpp" />
     <ClCompile Include="SourceCode\title.cpp" />
     <ClCompile Include="SourceCode\TitleUI.cpp" />
@@ -209,7 +208,6 @@
     <ClInclude Include="SourceCode\Scene2D.h" />
     <ClInclude Include="SourceCode\sound.h" />
     <ClInclude Include="SourceCode\TextfileController.h" />
-    <ClInclude Include="SourceCode\texture.h" />
     <ClInclude Include="SourceCode\TextureManager.h" />
     <ClInclude Include="SourceCode\title.h" />
     <ClInclude Include="SourceCode\TitleUI.h" />

@@ -24,13 +24,19 @@
 class CTextureManager
 {
 public:
+
+
+	/* メンバ関数 */
 	CTextureManager();													// コンストラクタ
 	~CTextureManager();													// デストラクタ
+
+	static CTextureManager* Create(void);								// 作成
+	static void Release(CTextureManager * src);							// 開放
+
 	void               Load(void);										// 読み込み
 	void               Unload(void);									// 開放
 	LPDIRECT3DTEXTURE9 GetTextureInfo(int nIndex);						// テクスチャの取得
 	int                GetNumTextureMax(void);							// テクスチャ数の最大
-	void               GetFileName(const int nIndex, STRING output);	// ファイル名の取得
 	CSTRING            GetFileName(const int nIndex);					// ファイル名の取得
 private:
 	/* メンバ関数 */

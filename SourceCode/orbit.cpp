@@ -9,7 +9,8 @@
 //-------------------------------------------------------------------------------------------------------------
 #include "orbit.h"
 #include "DebugProc.h"
-#include "texture.h"
+#include "manager.h"
+#include "TextureManager.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -44,8 +45,10 @@ COrbit * COrbit::Create(D3DXMATRIX *pMtxParent, int nNumWidht, D3DXVECTOR2 size,
 {
 	// クラスの生成
 	COrbit *pOrbit = new COrbit;
+	// テクスチャマネージャーの取得
+	CTextureManager*pTexManager = CManager::GetTextureManager();
 	// テクスチャの設定
-	pOrbit->BindTexture(CTexture::GetTextureInfo(CTexture::TEXTURE_TOPID_ORBIT + nTextureID));
+	pOrbit->BindTexture(pTexManager->GetTextureInfo(nTextureID));
 	// 情報の設定
 	pOrbit->SetInfo(pMtxParent, nNumWidht, size, col);
 	// 初期化
