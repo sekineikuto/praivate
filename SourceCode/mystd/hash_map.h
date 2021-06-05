@@ -70,7 +70,7 @@ public:
 	}
 
 	// ハッシュ値の取得
-	int HashValue(key_type key)
+	int HashValue(key_type& key)
 	{
 		int nHashval = 0;
 

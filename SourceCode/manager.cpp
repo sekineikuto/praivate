@@ -186,12 +186,16 @@ void CManager::SetMode(MODE mode)
 	// ライトの方向を設定
 	m_Light.SetDirection();
 
+	// nullcheck
 	if (m_pModeClass != nullptr)
-	{
+	{// 終了処理
 		m_pModeClass->Uninit();
+		// 破棄
 		delete m_pModeClass;
 		m_pModeClass = nullptr;
 	}
+
+	// モードを設定
 	m_mode = mode;
 	switch (m_mode)
 	{
@@ -225,6 +229,7 @@ void CManager::SetFPS(int fps)
 //-------------------------------------------------------------------------------------------------------------
 void CManager::SetHash(void)
 {
+	// 設定用ハッシュマップの作成
 	m_pSeting_map = new std::unordered_map<std::string, int>
 	{
 		{ "SOUND"      , 0 },
@@ -250,7 +255,9 @@ void CManager::SetHash(void)
 //-------------------------------------------------------------------------------------------------------------
 void CManager::UnsetHash(void)
 {
+	// 設定用ハッシュマップのクリア
 	m_pSeting_map->clear();
+	// 破棄
 	delete m_pSeting_map;
 	m_pSeting_map = nullptr;
 }
