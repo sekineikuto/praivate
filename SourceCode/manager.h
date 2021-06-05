@@ -18,10 +18,12 @@
 #include "camera.h"
 #include "Light.h"
 #include "Mylibrary.h"
+#include <unordered_map>
 
 //-------------------------------------------------------------------------------------------------------------
-// マクロ定義
+// エイリアス宣言
 //-------------------------------------------------------------------------------------------------------------
+using hash_map = std::unordered_map<std::string, int>;
 
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
@@ -75,11 +77,12 @@ public:
 	/* -- メンバ関数 -- */
 	CManager();																								// コンストラクタ
 	~CManager();																							// デストラクタ
-	static HRESULT Init(HINSTANCE hInstance ,HWND hWnd, BOOL bWindow);										// 初期化
-	static void Uninit(void);																				// 終了
-	static void Update(void);																				// 更新
-	static void Draw(void);																					// 描画
+	HRESULT Init(HINSTANCE hInstance ,HWND hWnd, BOOL bWindow);										// 初期化
+	void Uninit(void);																				// 終了
+	void Update(void);																				// 更新
+	void Draw(void);																					// 描画
 	static void SetHash(void);																				// ハッシュを設定
+	static void UnsetHash(void);																				// ハッシュの初期化
 	static void LoadInitFile(void);																			// 初期化ファイルの読み込み
 	static void ReadFromLine(CONST_STRING cnpLine, CONST_STRING cnpEntryType, CONST_STRING cnpEntryData);	// 1行から情報を読み取る
 	static STRING GetFIleName(CManager::FILE_NAME FileIndex);												// ファイル名の取得
@@ -148,6 +151,7 @@ private:
 	static CHash		m_Hash;							// ハッシュポインタ
 	static CMode*		m_pModeClass;					// モードクラスのポインタ
 	static CTextureManager * m_pTextureManager;			// テクスチャマネージャー
+	static hash_map*	m_pSeting_map;	// 設定用のハッシュマップ
 protected:
 };
 

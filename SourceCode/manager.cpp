@@ -16,26 +16,25 @@
 #include "title.h"
 #include "TextureManager.h"
 #include "TextfileController.h"
-#include <unordered_map>
-#include "mystd\hash_map.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
-CRenderer		CManager::m_Renderer                       = MYLIB_INITSTRUCT_WITHCONST;	// レンダラーポインタ
-Ckeyboard		CManager::m_Keyboard                       = MYLIB_INITSTRUCT_WITHCONST;	// キーボードのポインタ
-CMouse			CManager::m_Mouse                          = MYLIB_INITSTRUCT_WITHCONST;	// マウスのポインタ
-CGamepad		CManager::m_Gamepad                        = MYLIB_INITSTRUCT_WITHCONST;	// ゲームパッドのポインタ
-CSound			CManager::m_Sound                          = MYLIB_INITSTRUCT_WITHCONST;	// サウンドのポインタ
-CDebugProc		CManager::m_DebugProc                      = MYLIB_INITSTRUCT_WITHCONST;	// デバッグ処理のポインタ
-CCamera			CManager::m_Camera                         = MYLIB_INITSTRUCT_WITHCONST;	// カメラのポインタ
-CLight			CManager::m_Light                          = MYLIB_INITSTRUCT_WITHCONST;	// ライトのポインタ
-STRING			CManager::m_aFIleName[FILE_NAME::FILE_MAX] = MYLIB_INITSTRUCT_WITHCONST;	// ファイル名(.iniから読みこんだファイル)
-CManager::MODE	CManager::m_mode                           = CManager::MODE_NONE;			// モード
-int				CManager::m_nMyScore                       = MYLIB_INT_UNSET;				// スコア保存
-CHash			CManager::m_Hash                           = MYLIB_INITSTRUCT_WITHCONST;	// ハッシュポインタ
-CMode*			CManager::m_pModeClass                     = nullptr;						// モードクラスのポインタ
-CTextureManager* CManager::m_pTextureManager = nullptr;
+CRenderer			CManager::m_Renderer                          = MYLIB_INITSTRUCT_WITHCONST;	// レンダラーポインタ
+Ckeyboard			CManager::m_Keyboard                          = MYLIB_INITSTRUCT_WITHCONST;	// キーボードのポインタ
+CMouse				CManager::m_Mouse                             = MYLIB_INITSTRUCT_WITHCONST;	// マウスのポインタ
+CGamepad			CManager::m_Gamepad                           = MYLIB_INITSTRUCT_WITHCONST;	// ゲームパッドのポインタ
+CSound				CManager::m_Sound                             = MYLIB_INITSTRUCT_WITHCONST;	// サウンドのポインタ
+CDebugProc			CManager::m_DebugProc                         = MYLIB_INITSTRUCT_WITHCONST;	// デバッグ処理のポインタ
+CCamera				CManager::m_Camera                            = MYLIB_INITSTRUCT_WITHCONST;	// カメラのポインタ
+CLight				CManager::m_Light                             = MYLIB_INITSTRUCT_WITHCONST;	// ライトのポインタ
+STRING				CManager::m_aFIleName[FILE_NAME::FILE_MAX]    = MYLIB_INITSTRUCT_WITHCONST;	// ファイル名(.iniから読みこんだファイル)
+CManager::MODE		CManager::m_mode                              = CManager::MODE_NONE;		// モード
+int					CManager::m_nMyScore                          = MYLIB_INT_UNSET;			// スコア保存
+CHash				CManager::m_Hash                              = MYLIB_INITSTRUCT_WITHCONST;	// ハッシュポインタ
+CMode*				CManager::m_pModeClass                        = nullptr;					// モードクラスのポインタ
+CTextureManager*	CManager::m_pTextureManager                   = nullptr;					// テクスチャマネージャーのポインタ
+hash_map*			CManager::m_pSeting_map                       = nullptr;					// 設定用ハッシュマップ
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -132,6 +131,8 @@ void CManager::Uninit(void)
 		delete[] m_aFIleName[nCntFiileName];
 		m_aFIleName[nCntFiileName] = nullptr;
 	}
+	// ハッシュの初期化
+	UnsetHash();
 	// ハッシュテーブルの開放
 	m_Hash.ReleaseHashtable();
 	// レンダラーの終了処理
@@ -224,68 +225,7 @@ void CManager::SetFPS(int fps)
 //-------------------------------------------------------------------------------------------------------------
 void CManager::SetHash(void)
 {
-	// 設定用キー
-	char SetingKey[FILE_MAX][16] = 
-	{
-		{ "SOUND		" },
-		{ "CHARACTER	" },
-		{ "CHARAMOTION	" },
-		{ "BOTINFO		" },
-		{ "MESHFIELD	" },
-		{ "MODEL		" },
-		{ "COLLIDERL	" },
-		{ "MAP			" },
-		{ "TITLEUI		" },
-		{ "SELECT		" },
-		{ "TUTORIALUI	" },
-		{ "GAMEUI		" },
-		{ "RESULTUI		" },
-		{ "PARTICLE		" },
-		{ "TEXTURE		" },
-	};
-	// 設定用データ
-	char SetingData[FILE_MAX][4] =
-	{
-		{ "0" },
-		{ "1" },
-		{ "2" },
-		{ "3" },
-		{ "4" },
-		{ "5" },
-		{ "6" },
-		{ "7" },
-		{ "8" },
-		{ "9" },
-		{ "10" },
-		{ "11" },
-		{ "12" },
-		{ "13" },
-		{ "14" },
-	};
-	// ファイル最大数分ループ
-	for (int nCntHash = 0; nCntHash < FILE_MAX; nCntHash++)
-	{// ハッシュに登録する
-		m_Hash.Insert(SetingKey[nCntHash], SetingData[nCntHash]);
-	}
-}
-
-//-------------------------------------------------------------------------------------------------------------
-// 初期化ファイルの読み込み
-//-------------------------------------------------------------------------------------------------------------
-void CManager::LoadInitFile(void)
-{
-	mystd::hash_map<int> seting_test =
-	{ 
-		{ "SOUND"      , 0 },
-	};
-
-
-
-
-
-
-
-	std::unordered_map<std::string, int> seting_map =
+	m_pSeting_map = new std::unordered_map<std::string, int>
 	{
 		{ "SOUND"      , 0 },
 		{ "CHARACTER"  , 1 },
@@ -301,8 +241,26 @@ void CManager::LoadInitFile(void)
 		{ "GAMEUI"     , 11 },
 		{ "RESULTUI"   , 12 },
 		{ "PARTICLE"   , 13 },
-		{ "TEXTURE"    , 14},
+		{ "TEXTURE"    , 14 },
 	};
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// ハッシュの初期化
+//-------------------------------------------------------------------------------------------------------------
+void CManager::UnsetHash(void)
+{
+	m_pSeting_map->clear();
+	delete m_pSeting_map;
+	m_pSeting_map = nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// 初期化ファイルの読み込み
+//-------------------------------------------------------------------------------------------------------------
+void CManager::LoadInitFile(void)
+{
+	std::unordered_map<std::string, int> & seting_map = *m_pSeting_map;
 
 	CLoadInitFile::LoadFile("DATA/TEXT/GameManager.ini",
 		[&seting_map]
