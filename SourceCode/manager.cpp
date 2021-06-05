@@ -9,20 +9,15 @@
 //-------------------------------------------------------------------------------------------------------------
 #include "manager.h"
 #include "Scene.h"
-#include "keyboard.h"
-#include "mouse.h"
-#include "sound.h"
-#include "DebugProc.h"
-#include "camera.h"
-#include "Light.h"
-#include "gamepad.h"
 #include "myhash.h"
 #include "renderer.h"
 #include "Model.h"
 #include "mode.h"
 #include "title.h"
-#include "UISetingTypes.h"
 #include "TextureManager.h"
+#include "TextfileController.h"
+#include <unordered_map>
+#include "mystd\hash_map.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
@@ -40,7 +35,7 @@ CManager::MODE	CManager::m_mode                           = CManager::MODE_NONE;
 int				CManager::m_nMyScore                       = MYLIB_INT_UNSET;				// スコア保存
 CHash			CManager::m_Hash                           = MYLIB_INITSTRUCT_WITHCONST;	// ハッシュポインタ
 CMode*			CManager::m_pModeClass                     = nullptr;						// モードクラスのポインタ
-CTextureManager * CManager::m_pTextureManager = nullptr;
+CTextureManager* CManager::m_pTextureManager = nullptr;
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ
@@ -68,9 +63,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	{
 		return -1;
 	}
-	// UI2Dを使う宣言
-	ui2d::CFunctions::DeclarationToUse();
-
 	// ハッシュテーブルの作成
 	m_Hash.MakeHashtable();
 	// ハッシュの設定
@@ -88,7 +80,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	m_Gamepad.Init(hInstance, hWnd);
 
 	// サウンドの初期化
-	m_Sound.InitSound(hWnd);
+	m_Sound.InitSound(hWnd,m_aFIleName[FILE_NAME::FILE_SOUND]);
 	// カメラの初期化
 	m_Camera.Init();
 	// ライトの生成
@@ -135,7 +127,7 @@ void CManager::Uninit(void)
 	// キーボードの終了処理
 	m_Keyboard.Uninit();
 	// ファイルの開放
-	for (int nCntFiileName = 0; nCntFiileName < MANAGER_NUMLOAD; nCntFiileName++)
+	for (int nCntFiileName = 0; nCntFiileName < CManager::FILE_NAME::FILE_MAX; nCntFiileName++)
 	{// ファイルの終了処理
 		delete[] m_aFIleName[nCntFiileName];
 		m_aFIleName[nCntFiileName] = nullptr;
@@ -144,9 +136,6 @@ void CManager::Uninit(void)
 	m_Hash.ReleaseHashtable();
 	// レンダラーの終了処理
 	m_Renderer.Uninit();
-
-	// UI2Dの終了宣言
-	ui2d::CFunctions::DeclarationToEnd();
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -238,21 +227,21 @@ void CManager::SetHash(void)
 	// 設定用キー
 	char SetingKey[FILE_MAX][16] = 
 	{
-		{ "SOUND" },
-		{ "CHARACTER" },
-		{ "CHARAMOTION" },
-		{ "BOTINFO" },
-		{ "MESHFIELD" },
-		{ "MODEL" },
-		{ "COLLIDERL" },
-		{ "MAP" },
-		{ "TITLEUI" },
-		{ "SELECT" },
-		{ "TUTORIALUI" },
-		{ "GAMEUI" },
-		{ "RESULTUI" },
-		{ "PARTICLE" },
-		{ "TEXTURE" },
+		{ "SOUND		" },
+		{ "CHARACTER	" },
+		{ "CHARAMOTION	" },
+		{ "BOTINFO		" },
+		{ "MESHFIELD	" },
+		{ "MODEL		" },
+		{ "COLLIDERL	" },
+		{ "MAP			" },
+		{ "TITLEUI		" },
+		{ "SELECT		" },
+		{ "TUTORIALUI	" },
+		{ "GAMEUI		" },
+		{ "RESULTUI		" },
+		{ "PARTICLE		" },
+		{ "TEXTURE		" },
 	};
 	// 設定用データ
 	char SetingData[FILE_MAX][4] =
@@ -285,7 +274,52 @@ void CManager::SetHash(void)
 //-------------------------------------------------------------------------------------------------------------
 void CManager::LoadInitFile(void)
 {
-	CLoadFile::ReadLineByLineFromFile("DATA/TEXT/GameManager.ini", ReadFromLine);
+	mystd::hash_map<int> seting_test =
+	{ 
+		{ "SOUND"      , 0 },
+	};
+
+
+
+
+
+
+
+	std::unordered_map<std::string, int> seting_map =
+	{
+		{ "SOUND"      , 0 },
+		{ "CHARACTER"  , 1 },
+		{ "CHARAMOTION", 2 },
+		{ "BOTINFO"    , 3 },
+		{ "MESHFIELD"  , 4 },
+		{ "MODEL"      , 5 },
+		{ "COLLIDERL"  , 6 },
+		{ "MAP"        , 7 },
+		{ "TITLEUI"    , 8 },
+		{ "SELECT"     , 9 },
+		{ "TUTORIALUI" , 10 },
+		{ "GAMEUI"     , 11 },
+		{ "RESULTUI"   , 12 },
+		{ "PARTICLE"   , 13 },
+		{ "TEXTURE"    , 14},
+	};
+
+	CLoadInitFile::LoadFile("DATA/TEXT/GameManager.ini",
+		[&seting_map]
+		(CLoadInitFile::READINFO& info)
+	{
+		// 変数宣言
+		char SetingFileName[MYLIB_STRINGSIZE];	// 設定用ファイル名
+		SetingFileName[0] = MYLIB_CHAR_UNSET;
+
+		if (sscanf(info.line, "FILENAME = %s", &SetingFileName[0]) == 1)
+		{
+			// 配列番号の取得
+			int nIndex = seting_map.at(info.entrydata);
+			// 文字列の確保と設定
+			m_aFIleName[nIndex] = CMylibrary::SetStringAlloc(SetingFileName);
+		}
+	});
 }
 
 //-------------------------------------------------------------------------------------------------------------

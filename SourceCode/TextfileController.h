@@ -15,6 +15,9 @@
 #include <stdio.h>
 #include <windows.h>
 
+//-------------------------------------------------------------------------------------------------------------
+// 変数を宣言
+//-------------------------------------------------------------------------------------------------------------
 typedef const char *       CONST_STRING;	// 変更不可文字列
 typedef char *             STRING;			// 文字列
 
@@ -95,6 +98,25 @@ public:
 		return result;
 	}
 
+	template<class F>
+	inline static LOADRESULT LoadFile(FILE_NAME filename, F func)
+	{
+		LOADRESULT result;
+		CLoadInitFile Load;
+
+		// ファシル情報を文字列に読み込む
+		if ((result = Load.LoadFileIntoString(filename)) != LR_SUCCESS)
+			return result;
+
+		// 文字列から設定する
+		if ((result = Load.SetingfromString(func)) != LR_SUCCESS)
+			return result;
+
+		// ファイルデータの破棄
+		Load.DeleteFileData();
+
+		return result;
+	}
 private:
 	// 開放
 	inline static void Release(CLoadInitFile *pClass)
@@ -240,6 +262,72 @@ private:
 			
 			// 登録データの取得条件式
 			funk(info, value);
+		}
+
+		if (pBuffe != nullptr) {
+			delete[] pBuffe;
+			pBuffe = nullptr;
+		}
+
+		return LR_SUCCESS;
+	}
+
+	// 文字列から設定
+	template<class F>
+	inline LOADRESULT SetingfromString(F funk)
+	{
+		// バッファの領域確保
+		STRING pBuffe = new char[this->m_nuFileSize + 1];
+		if (pBuffe == nullptr)return B_FAIL;
+
+		// バッファ領域の最終地点
+		STRING pBuffeEnd = pBuffe + this->m_nuFileSize;
+		// 領域をコピーする
+		memcpy(pBuffe, this->m_pFileData, this->m_nuFileSize);
+		pBuffe[this->m_nuFileSize] = '\0';
+
+		// 読み込んだ情報
+		READINFO info = READINFO(pBuffe);
+		STRING lineEnd = nullptr;
+
+		// バッファの終了地点までループする
+		for (info.line = pBuffe; info.line < pBuffeEnd; info.line = lineEnd + 1)
+		{
+			while (*info.line == '\n' || *info.line == '\r' || *info.line == '\t')++info.line;
+
+			lineEnd = info.line;
+
+			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')++lineEnd;
+
+			lineEnd[0] = '\0';
+
+			// 1行の最初が [ 最後が ] の時
+			if (info.line[0] == '[' &&lineEnd > info.line &&lineEnd[-1] == ']')
+			{
+				lineEnd[-1] = '\0';
+
+				CONST_STRING pDataEnd;		// 登録用のデータの最後
+				CONST_STRING pTypeStart;	// 登録用のタイプの最初
+				STRING       pTypeEnd;		// 登録用のタイプの最後
+				CONST_STRING pDataStart;	// 登録用のデータの最初
+
+				pDataEnd = lineEnd - 1;															// 行の最後を設定
+				pTypeStart = info.line + 1;															// 最初の [ をスキップ
+				pTypeEnd = (STRING)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
+				pDataStart = pTypeEnd ? GetRangeStrfromChar(pTypeEnd + 1, pDataEnd, '[') : nullptr;	// 2つ目の [ までスキップ
+
+				if (pTypeEnd == '\0' || pDataStart == '\0')continue;
+
+				*pTypeEnd = '\0';	// 一つ目の ] を初期化
+				++pDataStart;		// 二つ目の [ を飛ばす
+
+				info.entrytype = (STRING)(void*)pTypeStart;
+				info.entrydata = (STRING)(void*)pDataStart;
+			}
+
+
+			// 登録データの取得条件式
+			funk(info);
 		}
 
 		if (pBuffe != nullptr) {

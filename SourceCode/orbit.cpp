@@ -301,7 +301,7 @@ HRESULT COrbit::MakeVatex(LPDIRECT3DDEVICE9 pDevice)
 		&m_pVtexBuff,
 		NULL))))
 	{
-		cout << "COrbit == 頂点情報の作成に失敗しました\n";
+		std::cout << "COrbit == 頂点情報の作成に失敗しました\n";
 		return E_FAIL;
 	}
 
@@ -342,7 +342,7 @@ HRESULT COrbit::MakeIndex(LPDIRECT3DDEVICE9 pDevice)
 		&m_pIdxBuff,
 		NULL))))
 	{
-		cout << "COrbit == インデックス情報の作成に失敗しました\n";
+		std::cout << "COrbit == インデックス情報の作成に失敗しました\n";
 		return E_FAIL;
 	}
 

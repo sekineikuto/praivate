@@ -171,8 +171,8 @@ void CModel::LoadModelFromX(void)
 			&SetingModel.pMesh)))
 		{
 			MessageBox(NULL, "モデルの生成に失敗しました", "警告！", MB_ICONWARNING);
-			cout << "Model.cpp == " << nCntModelName + 1 << "つ目のモデル失敗しました\n";
-			cout << "Model.cpp == " << nCntModelName << " < " << m_nNumAllModel << "\n";
+			std::cout << "Model.cpp == " << nCntModelName + 1 << "つ目のモデル失敗しました\n";
+			std::cout << "Model.cpp == " << nCntModelName << " < " << m_nNumAllModel << "\n";
 		}
 		// 最大最小の頂点のサイズを取得する
 		GetMaxMinVertices(SetingModel);
@@ -189,7 +189,6 @@ void CModel::LoadModelFromX(void)
 //-------------------------------------------------------------------------------------------------------------
 void CModel::GetResource(void)
 {
-	CLoadFile::ReadLineByLineFromFile(CManager::GetFIleName(CManager::FILE_MODEL), ReadFromLine);
 }
 
 //-------------------------------------------------------------------------------------------------------------

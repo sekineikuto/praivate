@@ -219,6 +219,6 @@ void DispConsol()
 
 	freopen_s(&fp, "CONOUT$", "w", stdout);
 
-	cout << fixed;
+	std::cout << std::fixed;
 #endif
 }

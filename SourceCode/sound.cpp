@@ -8,6 +8,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
+#include "TextfileController.h"
 #include "sound.h"
 
 //-------------------------------------------------------------------------------------------------------------
@@ -30,23 +31,12 @@
 #define _FOURCC_DPDS	'sdpd'
 #endif
 
-//-------------------------------------------------------------------------------------------------------------
-// 静的メンバ変数の初期化
-//-------------------------------------------------------------------------------------------------------------
-IXAudio2*               CSound::m_pXAudio2                       = NULL;	// XAudio2オブジェクトへのインターフェイス
-IXAudio2MasteringVoice* CSound::m_pMasteringVoice                = NULL;	// マスターボイス
-IXAudio2SourceVoice*    CSound::m_apSourceVoice[SOUND_LABEL_MAX] = {};		// ソースボイス
-BYTE*                   CSound::m_apDataAudio[SOUND_LABEL_MAX]   = {};		// オーディオデータ
-DWORD                   CSound::m_aSizeAudio[SOUND_LABEL_MAX]    = {};		// オーディオデータサイズ
-CSound::SOUNDPARAM      CSound::m_aParam[SOUND_LABEL_MAX]        = {}; 		// 各音素材のパラメータ
-int                     CSound::m_nNumParam                      = 0;		// パラメータ数
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ
 //-------------------------------------------------------------------------------------------------------------
 CSound::CSound()
 {
-	m_nNumParam = 0;
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -54,20 +44,45 @@ CSound::CSound()
 //-------------------------------------------------------------------------------------------------------------
 CSound::~CSound()
 {
-	m_nNumParam = 0;
 }
 
 //-------------------------------------------------------------------------------------------------------------
 // 初期化
 //-------------------------------------------------------------------------------------------------------------
-HRESULT CSound::InitSound(HWND hWnd)
+HRESULT CSound::InitSound(HWND hWnd, const char * pFileName)
 {
 	// 変数宣言
 	HRESULT hr;
-	int nCntSound;
+	int nCntSound = 0;
+	SOUNDPARAM* pPram = &m_aParam[0];
 
 	// サウンドデータの読み込み
-	GetSoundInfo();
+	CLoadInitFile::LoadFile(pFileName,
+		[&nCntSound,&pPram](CLoadInitFile::READINFO& info)
+	{
+		// 変数宣言
+		char aSetingData[128];		// 設定用データ
+		int  nSetingCntLoop;		// 設定用ループカウント
+		aSetingData[0] = '\0';
+		nSetingCntLoop = 0;
+
+		if (nCntSound < SOUND_LABEL_MAX)
+		{
+			if (sscanf(info.line, "INFO = %s ,%d", aSetingData, &nSetingCntLoop) == 2)
+			{
+				pPram[nCntSound].fileName = aSetingData;
+				pPram[nCntSound].nCntLoop = nSetingCntLoop;
+				// パラメータ数を加算する
+				nCntSound++;
+			}
+		}
+	});
+
+
+	if (nCntSound < SOUND_LABEL_MAX)
+	{
+		MessageBox(hWnd, "ファイル数が足りません", "警告！", MB_ICONWARNING);
+	}
 
 	// COMライブラリの初期化
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -117,10 +132,12 @@ HRESULT CSound::InitSound(HWND hWnd)
 		memset(&wfx, 0, sizeof(WAVEFORMATEXTENSIBLE));
 		memset(&buffer, 0, sizeof(XAUDIO2_BUFFER));
 
+
 		// サウンドデータファイルの生成
-		hFile = CreateFile(m_aParam[nCntSound].pFilename, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+		hFile = CreateFile(m_aParam[nCntSound].fileName.data(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
+			std::cout << "失敗したファイル名　== " << m_aParam[nCntSound].fileName.data() << "\n";
 			MessageBox(hWnd, "サウンドデータファイルの生成に失敗！(1)", "警告！", MB_ICONWARNING);
 			return HRESULT_FROM_WIN32(GetLastError());
 		}
@@ -334,16 +351,6 @@ void CSound::StopSound(void)
 }
 
 //-------------------------------------------------------------------------------------------------------------
-// 生成
-//-------------------------------------------------------------------------------------------------------------
-CSound * CSound::Create(HWND hWnd)
-{
-	CSound *pSound = new CSound;
-	pSound->InitSound(hWnd);
-	return pSound;
-}
-
-//-------------------------------------------------------------------------------------------------------------
 // チャンクのチェック
 //-------------------------------------------------------------------------------------------------------------
 HRESULT CSound::CheckChunk(HANDLE hFile, DWORD format, DWORD * pChunkSize, DWORD * pChunkDataPosition)
@@ -448,38 +455,7 @@ void CSound::UnLoadFileName(void)
 {
 	for (int nCntFileName = 0; nCntFileName < CSound::SOUND_LABEL_MAX; nCntFileName++)
 	{
-		if (m_aParam[nCntFileName].pFilename != NULL)
-		{
-			delete[]m_aParam[nCntFileName].pFilename;
-			m_aParam[nCntFileName].pFilename = NULL;
-		}
-	}
-}
-
-//-------------------------------------------------------------------------------------------------------------
-// サウンドを取得する
-//-------------------------------------------------------------------------------------------------------------
-void CSound::GetSoundInfo(void)
-{
-	CLoadFile::ReadLineByLineFromFile(CManager::GetFIleName(CManager::FILE_SOUND), ReadFromLine);
-}
-
-//-------------------------------------------------------------------------------------------------------------
-// 1行から情報を読み取る
-//-------------------------------------------------------------------------------------------------------------
-void CSound::ReadFromLine(CONST_STRING cnpLine, CONST_STRING cnpEntryType, CONST_STRING cnpEntryData)
-{
-	// 変数宣言
-	char aSetingData[MYLIB_STRINGSIZE];		// 設定用データ
-	int  nSetingCntLoop;					// 設定用ループカウント
-	aSetingData[0] = MYLIB_CHAR_UNSET;
-	nSetingCntLoop = MYLIB_INT_UNSET;
-
-	if (sscanf(cnpLine, "INFO = %s ,%d", aSetingData, &nSetingCntLoop) == 2)
-	{
-		m_aParam[m_nNumParam].pFilename = CMylibrary::SetStringAlloc(aSetingData);
-		m_aParam[m_nNumParam].nCntLoop = nSetingCntLoop;
-		// パラメータ数を加算する
-		m_nNumParam++;
+		m_aParam[nCntFileName].fileName.clear();
+		m_aParam[nCntFileName].fileName.~basic_string();
 	}
 }

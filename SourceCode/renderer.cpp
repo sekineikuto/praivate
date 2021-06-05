@@ -212,7 +212,7 @@ void CRenderer::Draw(void)
 //-------------------------------------------------------------------------------------------------------------
 // ステンシルマスク用レンダラーステートのセットアップ
 //-------------------------------------------------------------------------------------------------------------
-void CRenderer::SetUpStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
+void CRenderer::SetStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
 {
 	// ステンシルバッファ設定 => 有効
 	pDevice->SetRenderState(D3DRS_STENCILENABLE, TRUE);
@@ -240,7 +240,7 @@ void CRenderer::SetUpStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned 
 //-------------------------------------------------------------------------------------------------------------
 // ステンシル用レンダラーステートのセットアップ
 //-------------------------------------------------------------------------------------------------------------
-void CRenderer::SetUpStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
+void CRenderer::SetStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func)
 {
 	// Zバッファ設定 => 有効
 	pDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
@@ -260,4 +260,13 @@ void CRenderer::SetUpStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char
 	pDevice->SetRenderState(D3DRS_STENCILPASS, D3DSTENCILOP_REPLACE);
 	pDevice->SetRenderState(D3DRS_STENCILFAIL, D3DSTENCILOP_KEEP);
 	pDevice->SetRenderState(D3DRS_STENCILZFAIL, D3DSTENCILOP_KEEP);
+}
+
+//-------------------------------------------------------------------------------------------------------------
+// ステンシル用レンダラーステートの設定を外す
+//-------------------------------------------------------------------------------------------------------------
+void CRenderer::UnsetStencilRenderState(LPDIRECT3DDEVICE9 pDevice)
+{
+	// ステンシルバッファ => 無効
+	pDevice->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 }

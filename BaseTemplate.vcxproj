@@ -152,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\2DUI.cpp" />
+    <ClCompile Include="SourceCode\Ui2d.cpp" />
     <ClCompile Include="SourceCode\camera.cpp" />
     <ClCompile Include="SourceCode\DebugProc.cpp" />
     <ClCompile Include="SourceCode\fade.cpp" />
@@ -178,10 +178,14 @@
     <ClCompile Include="SourceCode\TextureManager.cpp" />
     <ClCompile Include="SourceCode\title.cpp" />
     <ClCompile Include="SourceCode\TitleUI.cpp" />
-    <ClCompile Include="SourceCode\UISetingTypes.cpp" />
+    <ClCompile Include="SourceCode\Ui2dSeting.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\2DUI.h" />
+    <ClInclude Include="SourceCode\mystd\hash_map.h" />
+    <ClInclude Include="SourceCode\mystd\mystd.h" />
+    <ClInclude Include="SourceCode\mystd\types.h" />
+    <ClInclude Include="SourceCode\mystd\utility.h" />
+    <ClInclude Include="SourceCode\Ui2d.h" />
     <ClInclude Include="SourceCode\camera.h" />
     <ClInclude Include="SourceCode\DebugProc.h" />
     <ClInclude Include="SourceCode\fade.h" />
@@ -198,9 +202,6 @@
     <ClInclude Include="SourceCode\myhash.h" />
     <ClInclude Include="SourceCode\myhash_chain.h" />
     <ClInclude Include="SourceCode\Mylibrary.h" />
-    <ClInclude Include="SourceCode\mystd.h" />
-    <ClInclude Include="SourceCode\mystd_types.h" />
-    <ClInclude Include="SourceCode\mystd_utility.h" />
     <ClInclude Include="SourceCode\number.h" />
     <ClInclude Include="SourceCode\orbit.h" />
     <ClInclude Include="SourceCode\renderer.h" />
@@ -211,7 +212,7 @@
     <ClInclude Include="SourceCode\TextureManager.h" />
     <ClInclude Include="SourceCode\title.h" />
     <ClInclude Include="SourceCode\TitleUI.h" />
-    <ClInclude Include="SourceCode\UISetingTypes.h" />
+    <ClInclude Include="SourceCode\Ui2dSeting.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl" />

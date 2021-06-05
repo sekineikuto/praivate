@@ -8,14 +8,13 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "TitleUI.h"
-
 #include "manager.h"
 
 
 //-------------------------------------------------------------------------------------------------------------
 // 静的メンバ変数の初期化
 //-------------------------------------------------------------------------------------------------------------
-ui2d::SETING2DUI CTitleUI::m_Seting;						// 設定
+ui2d::SETING CTitleUI::m_Seting;						// 設定
 bool CTitleUI::m_bSetingUI = false;
 
 //-------------------------------------------------------------------------------------------------------------
@@ -62,7 +61,7 @@ void CTitleUI::Draw(void)
 //-------------------------------------------------------------------------------------------------------------
 // 2DUiの取得
 //-------------------------------------------------------------------------------------------------------------
-C2DUi * CTitleUI::Get2dui(int nIndex)
+CUi2d * CTitleUI::Get2dui(int nIndex)
 {
 #ifdef _DEBUG
 	if (CTitleUI::TYPE_NONE >= nIndex &&nIndex >= CTitleUI::TYPE_MAX)
@@ -76,10 +75,10 @@ C2DUi * CTitleUI::Get2dui(int nIndex)
 //-------------------------------------------------------------------------------------------------------------
 // 1行ずつ読み込む
 //-------------------------------------------------------------------------------------------------------------
-void CTitleUI::ReadFromLine(CLoadInitFile::READINFO& info, std::vector<C2DUi*> *p2dui)
+void CTitleUI::ReadFromLine(CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui)
 {
 	// 変数宣言
-	std::vector<C2DUi*> *pSet = p2dui;
+	std::vector<CUi2d*> *pSet = p2dui;
 	if (strcmp(info.line, "SET_UI") == 0)
 	{
 		m_bSetingUI = true;
@@ -93,7 +92,7 @@ void CTitleUI::ReadFromLine(CLoadInitFile::READINFO& info, std::vector<C2DUi*> *
 //-------------------------------------------------------------------------------------------------------------
 // パラメータを設定
 //-------------------------------------------------------------------------------------------------------------
-void CTitleUI::ReadFromLineSetParam(CONST_STRING line, std::vector<C2DUi*> *p2dui)
+void CTitleUI::ReadFromLineSetParam(CONST_STRING line, std::vector<CUi2d*> *p2dui)
 {
 	char aData[MYLIB_STRINGSIZE] = {};
 	int nData = 0;
@@ -105,7 +104,7 @@ void CTitleUI::ReadFromLineSetParam(CONST_STRING line, std::vector<C2DUi*> *p2du
 		if (m_bSetingUI)
 		{
 			m_bSetingUI = false;
-			p2dui->push_back(C2DUi::Create(m_Seting));
+			p2dui->push_back(CUi2d::Create(m_Seting));
 		}
 	}
 	else

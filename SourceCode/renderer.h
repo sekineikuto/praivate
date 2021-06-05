@@ -52,9 +52,9 @@ public:
 	inline LPDIRECT3DDEVICE9 GetDevice(void) { return m_pD3DDevice; }			// デバイスの取得
 	inline CFade *GetFade(void) { return m_pFade; }								// フェードの取得
 
-	static void SetUpStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func);	// ステンシルマスク用レンダラーステートのセットアップ
-	static void SetUpStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func);		// ステンシル用レンダラーステートのセットアップ
-
+	static void SetStencilMaskRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func);	// ステンシルマスク用レンダラーステートのセットアップ
+	static void SetStencilRenderState(LPDIRECT3DDEVICE9 pDevice, unsigned char ref, D3DCMPFUNC cmp_func);		// ステンシル用レンダラーステートのセットアップ
+	static void UnsetStencilRenderState(LPDIRECT3DDEVICE9 pDevice);												// ステンシル用レンダラーステートの設定を外す
 #ifdef _DEBUG
 	inline void SetFPS(int fps) { m_nCountFPS = fps; }
 #endif

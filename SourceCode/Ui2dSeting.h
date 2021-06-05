@@ -52,10 +52,10 @@ namespace ui2d
 	};
 
 	// 2DUIの設定用の構造体
-	typedef struct SETING2DUI
+	typedef struct SETING
 	{
-		SETING2DUI() {}
-		SETING2DUI(int  nTextureID, bool bDisp, D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR2 size, float fRotation, int nValue, int nOriginType)
+		SETING() {}
+		SETING(int  nTextureID, bool bDisp, D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR2 size, float fRotation, int nOriginType)
 		{
 			this->nTextureID = nTextureID;
 			this->bDisp = bDisp;
@@ -63,7 +63,6 @@ namespace ui2d
 			this->col = col;
 			this->size = size;
 			this->fRotation = fRotation;
-			this->nValue = nValue;
 			this->nOriginType = nOriginType;
 		}
 		int         nTextureID;		// テクスチャID
@@ -72,33 +71,7 @@ namespace ui2d
 		D3DXCOLOR   col;			// 色
 		D3DXVECTOR2 size;			// サイズ
 		float       fRotation;		// 回転量
-		int         nValue;			// 値
 		int         nOriginType;	// 原点タイプ
-	} SETING2DUI;
-
-	/* クラス定義 */
-	// 関数群
-	class CFunctions
-	{
-	public:
-		// 関数群を使うための宣言
-		static void DeclarationToUse(void);
-		// 関数群の終了宣言
-		static void DeclarationToEnd(void);
-
-		// 文字列からマスク値の取得
-		static inline int GetMaskToString(STRING str);
-
-	private:
-		/* メンバ関数 */
-		// マスクのハッシュの作成
-		static void MakeMaskHash(void);
-
-		/* メンバ変数 */
-		static CHash * m_pMaskHash;
-	};
-
-
-
+	} SETING;
 }
 #endif

@@ -12,7 +12,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "mystd_types.h"
+#include "mystd\types.h"
 #include "TextfileController.h"
 #include <vector>
 #include <iostream>
@@ -24,8 +24,6 @@
 class CTextureManager
 {
 public:
-
-
 	/* メンバ関数 */
 	CTextureManager();													// コンストラクタ
 	~CTextureManager();													// デストラクタ

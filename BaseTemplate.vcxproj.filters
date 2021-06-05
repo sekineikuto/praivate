@@ -13,11 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ヘッダー ファイル\mystd">
+      <UniqueIdentifier>{2582fb5e-6ba9-4ad3-991c-322cced1f142}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\2DUI.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="SourceCode\camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -90,17 +90,17 @@
     <ClCompile Include="SourceCode\TitleUI.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\UISetingTypes.cpp">
+    <ClCompile Include="SourceCode\TextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="SourceCode\TextureManager.cpp">
+    <ClCompile Include="SourceCode\Ui2d.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SourceCode\Ui2dSeting.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SourceCode\2DUI.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -173,23 +173,29 @@
     <ClInclude Include="SourceCode\TitleUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\UISetingTypes.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\TextfileController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\mystd.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceCode\mystd_utility.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\TextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\mystd_types.h">
+    <ClInclude Include="SourceCode\Ui2d.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\mystd\mystd.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\mystd\utility.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\mystd\types.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Ui2dSeting.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\mystd\hash_map.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

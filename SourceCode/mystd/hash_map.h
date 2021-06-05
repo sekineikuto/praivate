@@ -1,39 +1,66 @@
 //*************************************************************************************************************
 //
-// 2DUI処理[2DUI.h]
-// Author : Sekine Ikuto
+// 軌道処理 [orbit.h]
+// Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
-#ifndef _2DUI_H_
-#define _2DUI_H_
+#ifndef _MYSTD_HASH_MAP_H_
+#define _MYSTD_HASH_MAP_H_
 
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "Scene2D.h"
-#include "UISetingTypes.h"
+#include "mystd.h"
 
 //-------------------------------------------------------------------------------------------------------------
-// クラス定義
+// 名前空間定義
 //-------------------------------------------------------------------------------------------------------------
-class C2DUi : public CScene2D
+_BEGIN_MYSTD
+
+
+template<class T>
+class hash_map
 {
+
 public:
-	C2DUi() : CScene2D(PRIORITY_2DUI) {}
-	C2DUi(PRIORITY pri) : CScene2D(pri) {}												// コンストラクタ
-	~C2DUi() {}																			// デストラクタ
+	class cell
+	{
+	public:
+		cell(std::string inkey, T indata)
+		{
+			key = inkey;
+			data = indata;
+			pNext = nullptr;
+		}
 
-	static C2DUi * Create(ui2d::SETING2DUI &seting, PRIORITY pri = PRIORITY_2DUI);			// 生成
-	void Init(ui2d::SETING2DUI &seting, PRIORITY pri);										// 初期化
-	void Init(void);																	// 初期化
-	void Uninit(void);																	// 終了
-	void Update(void);																	// 更新
-	void Draw(void);																	// 描画
+		std::string key;
+		T data;
+		cell *pNext;
+	};
 
-private:
+public:
+	hash_map(std::string str, T data)
+	{
 
-protected:
+	}
+
+	template < typename input >
+	hash_map(input first, input last)
+	{
+		for (auto i = first; i != last; ++i)
+		{
+			int n = 0;
+			n++;
+		}
+	}
+
+	hash_map(std::initializer_list<cell> init) :
+		hash_map(std::begin(init),std::end(init))
+	{
+
+	}
 };
 
+_END_MYSTD
 
-#endif
+#endif // _MYSTD_H_
