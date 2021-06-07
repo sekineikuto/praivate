@@ -14,6 +14,9 @@
 //-------------------------------------------------------------------------------------------------------------
 #include <stdio.h>
 #include <windows.h>
+#include <vector>
+#include "mystd\mystd.h"
+#include "mystd\types.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // 変数を宣言
@@ -32,31 +35,163 @@ typedef unsigned int       FILE_SIZE;		// ファイルデータサイズ
 typedef char *             FILE_DATA;		// ファイルデータ
 typedef const char *       OPEN_MODE;		// ファイルを開くモード
 
+_BEGIN_MYSTD
+//-------------------------------------------------------------------------------------------------------------
+// 列挙型定義
+//-------------------------------------------------------------------------------------------------------------
+
+// * [contents] 列挙型定義
+// * [memo] 
+//   LOADRESULT -> LR
+//   MAKE -> M
+//   BUFFER -> B
+enum LOADRESULT
+{
+	LR_FAILURE = -1,		// 失敗(エラー)
+	LR_SUCCESS,				// 成功
+
+	M_CREATE_FAIL,			// 作成に失敗した
+	M_OPEN_FAIL,			// ファイルを開けなかった
+	M_SIZE_FAIL,			// サイズの取得失敗
+	M_FILEDATA_FAIL,		// ファイルデータのエラー
+	M_READ_FAIL,			// 読み込み失敗
+
+	B_FAIL,					// バッファ領域取得エラー
+};
+
+//-------------------------------------------------------------------------------------------------------------
+// ヘルパー関数群
+//-------------------------------------------------------------------------------------------------------------
+
+// ファイルを大きさを取得する
+inline UVLONG GetFileSize(FILE * pFile)
+{
+	long lTop = 0;
+	long lSize = 0;
+
+	// 先頭のファイル位置を取得
+	lTop = ftell(pFile);
+
+	// (ファイル位置を取得成功 && ファイル位置を尾末に設定に成功)が失敗した時
+	if ((lTop != -1 &&
+		fseek(pFile, 0, SEEK_END) == 0) != 1)
+	{
+		return -1;
+	}
+
+	// 尾末のファイル位置（サイズ）を取得
+	lSize = ftell(pFile);
+
+	// (サイズの取得成功 && ファイル位置を先頭に設定に成功)が失敗した時
+	if ((lSize != -1 &&
+		fseek(pFile, lTop, SEEK_SET) == 0) != 1)
+	{
+		return -1;
+	}
+
+	return (UVLONG)lSize;
+}
+
+// ファイル情報を文字列に読み込む
+inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FILE_DATA* outData, OPEN_MODE Mode = "rb")
+{
+	// ファイルを開く
+	FILE *pFile;
+	if ((pFile = fopen(pFileName, Mode)) == nullptr)return M_OPEN_FAIL;
+
+	// ファイルサイズの取得
+	UVLONG uvlSize = GetFileSize(pFile);
+	if (uvlSize == (UVLONG)-1) {
+		fclose(pFile);
+		return M_SIZE_FAIL;
+	}
+
+	// ファイルデータの生成
+	FILE_DATA pFileData = new char[(size_t)uvlSize];
+	if (pFileData == nullptr) {
+		fclose(pFile);
+		return M_FILEDATA_FAIL;
+	}
+
+	// ファイル情報を読み込む
+	if ((UVLONG)fread(pFileData, 1, (size_t)uvlSize, pFile) != uvlSize) {
+		fclose(pFile);
+		delete[]pFileData;
+		return M_READ_FAIL;
+	}
+
+	// ファイルを閉じる
+	fclose(pFile);
+
+	*outSize = (FILE_SIZE)uvlSize;
+	*outData = pFileData;
+
+	return LR_SUCCESS;
+}
+
+
+
+
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
 //-------------------------------------------------------------------------------------------------------------
+class CLoadFile
+{
+public:
+	// コンストラクタ
+	CLoadFile() {}
+	// デストラクタ
+	~CLoadFile() {}
+
+	// ファイルのロード
+	// ファイルのロード
+	inline static LOADRESULT LoadFile(FILE_NAME filename, std::vector<std::string>& fileInfo)
+	{
+		FILE_SIZE m_nuFileSize;	// ファイルサイズ
+		FILE_DATA m_pFileData;	// ファイルデータ
+
+		LoadFileIntoString(filename, &m_nuFileSize, &m_pFileData);
+
+		// バッファの領域確保
+		STRING pBuffe = new char[m_nuFileSize + 1];
+		if (pBuffe == nullptr)return B_FAIL;
+
+		// バッファ領域の最終地点
+		STRING pBuffeEnd = pBuffe + m_nuFileSize;
+		// 領域をコピーする
+		memcpy(pBuffe, m_pFileData, m_nuFileSize);
+		pBuffe[m_nuFileSize] = '\0';
+
+		// 読み込んだ情報
+		STRING line = pBuffe;
+		STRING lineEnd = nullptr;
+
+		// バッファの終了地点までループする
+		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
+		{
+			// 最初の「改行、タブをスキップする」
+			while (*line == '\n' || *line == '\r' || *line == '\t' || *line == ' ' || *line == '　')++line;
+
+			lineEnd = line;
+
+			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')++lineEnd;
+
+			lineEnd[0] = '\0';
+		}
+
+		if (pBuffe != nullptr) {
+			delete[] pBuffe;
+			pBuffe = nullptr;
+		}
+
+		return LR_SUCCESS;
+	}
+};
+
+// 初期化ファイルの読み込み
 class CLoadInitFile
 {
 public:
-	// * [contents] 列挙型定義
-	// * [memo] 
-	//   LOADRESULT -> LR
-	//   MAKE -> M
-	//   BUFFER -> B
-	enum LOADRESULT
-	{
-		LR_FAILURE = -1,		// 失敗(エラー)
-		LR_SUCCESS,				// 成功
-
-		M_CREATE_FAIL,			// 作成に失敗した
-		M_OPEN_FAIL,			// ファイルを開けなかった
-		M_SIZE_FAIL,			// サイズの取得失敗
-		M_FILEDATA_FAIL,		// ファイルデータのエラー
-		M_READ_FAIL,			// 読み込み失敗
-
-		B_FAIL,					// バッファ領域取得エラー
-	};
-
 	// 構造体定義
 	typedef struct READINFO
 	{
@@ -140,34 +275,7 @@ private:
 		this->m_pFileData = nullptr;
 	}
 
-	// ファイルを大きさを取得する
-	inline UVLONG GetFileSize(FILE * pFile)
-	{
-		long lTop = 0;
-		long lSize = 0;
 
-		// 先頭のファイル位置を取得
-		lTop = ftell(pFile);
-
-		// (ファイル位置を取得成功 && ファイル位置を尾末に設定に成功)が失敗した時
-		if ((lTop != -1 &&
-			fseek(pFile, 0, SEEK_END) == 0) != 1)
-		{
-			return -1;
-		}
-
-		// 尾末のファイル位置（サイズ）を取得
-		lSize = ftell(pFile);
-
-		// (サイズの取得成功 && ファイル位置を先頭に設定に成功)が失敗した時
-		if ((lSize != -1 &&
-			fseek(pFile, lTop, SEEK_SET) == 0) != 1)
-		{
-			return -1;
-		}
-
-		return (UVLONG)lSize;
-	}
 
 	// ファイル情報を文字列に読み込む
 	inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, OPEN_MODE Mode = "rb")
@@ -350,4 +458,5 @@ private:
 	FILE_DATA m_pFileData;	// ファイルデータ
 };
 
+_END_MYSTD
 #endif

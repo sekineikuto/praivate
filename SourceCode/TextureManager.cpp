@@ -57,7 +57,7 @@ void CTextureManager::Load(void)
 	pDevice = CManager::GetRenderer().GetDevice();		// デバイスの取得
 
 	// テクスチャ名を取得
-	CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TEXTURE), &m_pFileName, ReadFromLine);
+	mystd::CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TEXTURE), &m_pFileName, ReadFromLine);
 
 	// テクスチャ名の数要素を増やす
 	m_pTexture.reserve(m_pFileName.size());
@@ -133,7 +133,7 @@ CSTRING CTextureManager::GetFileName(const int nIndex)
 //-------------------------------------------------------------------------------------------------------------
 // 一行から読み取る
 //-------------------------------------------------------------------------------------------------------------
-void CTextureManager::ReadFromLine(CLoadInitFile::READINFO & info, std::vector<std::string>* filename)
+void CTextureManager::ReadFromLine(mystd::CLoadInitFile::READINFO & info, std::vector<std::string>* filename)
 {
 	char aData[128] = { '\0' };
 	int nNumber = 0;

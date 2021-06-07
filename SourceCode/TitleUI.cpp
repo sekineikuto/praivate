@@ -33,7 +33,7 @@ CTitleUI * CTitleUI::Create(void)
 void CTitleUI::Init(void)
 {
 	// ファイルから読み込み
-	CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
+	mystd::CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ CUi2d * CTitleUI::Get2dui(int nIndex)
 //-------------------------------------------------------------------------------------------------------------
 // 1行ずつ読み込む
 //-------------------------------------------------------------------------------------------------------------
-void CTitleUI::ReadFromLine(CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui)
+void CTitleUI::ReadFromLine(mystd::CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui)
 {
 	// 変数宣言
 	std::vector<CUi2d*> *pSet = p2dui;

@@ -173,9 +173,6 @@
     <ClInclude Include="SourceCode\TitleUI.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\TextfileController.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="SourceCode\TextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -195,6 +192,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SourceCode\mystd\hash_map.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\TextfileController.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
   </ItemGroup>

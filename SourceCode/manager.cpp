@@ -269,9 +269,9 @@ void CManager::LoadInitFile(void)
 {
 	std::unordered_map<std::string, int> & seting_map = *m_pSeting_map;
 
-	CLoadInitFile::LoadFile("DATA/TEXT/GameManager.ini",
+	mystd::CLoadInitFile::LoadFile("DATA/TEXT/GameManager.ini",
 		[&seting_map]
-		(CLoadInitFile::READINFO& info)
+		(mystd::CLoadInitFile::READINFO& info)
 	{
 		// 変数宣言
 		char SetingFileName[MYLIB_STRINGSIZE];	// 設定用ファイル名

@@ -55,23 +55,61 @@ namespace ui2d
 	typedef struct SETING
 	{
 		SETING() {}
-		SETING(int  nTextureID, bool bDisp, D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR2 size, float fRotation, int nOriginType)
+		SETING(int  nTextureID, bool bDisp, D3DXVECTOR3& pos, D3DXVECTOR2& size, float fRotation, int nOriginType, D3DXCOLOR& col) :
+			nTextureID(nTextureID), bDisp(bDisp), pos(pos), size(size), fRotation(fRotation), nOriginType(nOriginType), col(col)
+		{}
+		// コピーコンストラクタ
+		SETING(SETING &CopySource)
 		{
-			this->nTextureID = nTextureID;
-			this->bDisp = bDisp;
-			this->pos = pos;
-			this->col = col;
-			this->size = size;
-			this->fRotation = fRotation;
-			this->nOriginType = nOriginType;
+			this->nTextureID  = CopySource.nOriginType;	// テクスチャID
+			this->bDisp       = CopySource.bDisp;		// 描画フラグ
+			this->pos         = CopySource.pos;			// 位置
+			this->size        = CopySource.size;		// サイズ
+			this->fRotation   = CopySource.fRotation;	// 回転量
+			this->nOriginType = CopySource.nOriginType;	// 原点タイプ
+			this->col         = CopySource.col;			// 色
 		}
+		// コピー
+		SETING &operator = (SETING &CopySource)
+		{
+			this->nTextureID  = CopySource.nOriginType;	// テクスチャID
+			this->bDisp       = CopySource.bDisp;		// 描画フラグ
+			this->pos         = CopySource.pos;			// 位置
+			this->size        = CopySource.size;		// サイズ
+			this->fRotation   = CopySource.fRotation;	// 回転量
+			this->nOriginType = CopySource.nOriginType;	// 原点タイプ
+			this->col         = CopySource.col;			// 色
+		}
+
+		/* メンバ変数 */
 		int         nTextureID;		// テクスチャID
 		bool        bDisp;			// 描画フラグ
 		D3DXVECTOR3 pos;			// 位置
-		D3DXCOLOR   col;			// 色
 		D3DXVECTOR2 size;			// サイズ
 		float       fRotation;		// 回転量
 		int         nOriginType;	// 原点タイプ
+		D3DXCOLOR   col;			// 色
 	} SETING;
+
+	// 設定情報をロードする
+	inline void LoadSetingInfo(const char *pFileName, std::vector<SETING> &output)
+	{
+		// ファイルが無いとき
+		if (pFileName == nullptr)
+			return;
+
+		// ファイルを開く
+		FILE *pFile = fopen(pFileName, "rb");
+
+		// ファイルが開けない
+		if (pFile == nullptr)
+			return;
+
+
+		// ファイルを閉じる
+		fclose(pFile);
+		pFile = nullptr;
+
+	}
 }
 #endif

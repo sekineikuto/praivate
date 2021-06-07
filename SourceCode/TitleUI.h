@@ -44,7 +44,7 @@ public:
 	CUi2d*          Get2dui(int nIndex = TYPE_TITLENAME);								// 2DUiの取得
 private:
 	/* メンバ関数 */
-	static void     ReadFromLine(CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui);						// 1行ずつ読み込む
+	static void     ReadFromLine(mystd::CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui);						// 1行ずつ読み込む
 	static void     ReadFromLineSetParam(CONST_STRING line, std::vector<CUi2d*> *p2dui);	// パラメータに設定
 	/* メンバ変数 */
 	static ui2d::SETING m_Seting;													// 設定

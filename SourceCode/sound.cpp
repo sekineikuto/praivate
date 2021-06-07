@@ -8,8 +8,8 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "TextfileController.h"
 #include "sound.h"
+#include "TextfileController.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -57,8 +57,8 @@ HRESULT CSound::InitSound(HWND hWnd, const char * pFileName)
 	SOUNDPARAM* pPram = &m_aParam[0];
 
 	// サウンドデータの読み込み
-	CLoadInitFile::LoadFile(pFileName,
-		[&nCntSound,&pPram](CLoadInitFile::READINFO& info)
+	mystd::CLoadInitFile::LoadFile(pFileName,
+		[&nCntSound,&pPram](mystd::CLoadInitFile::READINFO& info)
 	{
 		// 変数宣言
 		char aSetingData[128];		// 設定用データ

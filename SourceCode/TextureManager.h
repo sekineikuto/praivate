@@ -38,7 +38,7 @@ public:
 	CSTRING            GetFileName(const int nIndex);					// ファイル名の取得
 private:
 	/* メンバ関数 */
-	static void ReadFromLine(CLoadInitFile::READINFO& info, std::vector<std::string> *filename);	// 1行ずつ読み込む
+	static void ReadFromLine(mystd::CLoadInitFile::READINFO& info, std::vector<std::string> *filename);	// 1行ずつ読み込む
 
 	/* メンバ変数 */
 	std::vector<LPDIRECT3DTEXTURE9> m_pTexture;							// テクスチャ情報のポインタ
