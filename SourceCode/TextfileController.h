@@ -19,6 +19,11 @@
 #include "mystd\types.h"
 
 //-------------------------------------------------------------------------------------------------------------
+// マクロ定義
+//-------------------------------------------------------------------------------------------------------------
+#define TxtCtrlSkipCondition(chr) chr == '\n' || chr == '\r' || chr == '\t' || chr == ' ' || chr == '　'
+
+//-------------------------------------------------------------------------------------------------------------
 // 変数を宣言
 //-------------------------------------------------------------------------------------------------------------
 typedef const char *       CONST_STRING;	// 変更不可文字列
@@ -93,7 +98,7 @@ inline UVLONG GetFileSize(FILE * pFile)
 }
 
 // ファイル情報を文字列に読み込む
-inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FILE_DATA* outData, OPEN_MODE Mode = "rb")
+inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FILE_DATA *outData, OPEN_MODE Mode = "rb")
 {
 	// ファイルを開く
 	FILE *pFile;
@@ -129,11 +134,12 @@ inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FI
 	return LR_SUCCESS;
 }
 
-
-
-
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
+//-------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------
+// ファイル情報を取得する
 //-------------------------------------------------------------------------------------------------------------
 class CLoadFile
 {
@@ -143,24 +149,28 @@ public:
 	// デストラクタ
 	~CLoadFile() {}
 
-	// ファイルのロード
-	// ファイルのロード
-	inline static LOADRESULT LoadFile(FILE_NAME filename, std::vector<std::string>& fileInfo)
+	// ファイルを分割して取得する
+	inline static LOADRESULT GetSplit(FILE_NAME filename, std::vector<std::string>& fileInfo)
 	{
-		FILE_SIZE m_nuFileSize;	// ファイルサイズ
-		FILE_DATA m_pFileData;	// ファイルデータ
+		// 変数宣言
+		FILE_SIZE nFileSize;	// ファイルサイズ
+		FILE_DATA pFileData = nullptr;			// ファイルデータ
+		LOADRESULT result;
 
-		LoadFileIntoString(filename, &m_nuFileSize, &m_pFileData);
+		// ファイル情報を文字列に読み込む
+		result = LoadFileIntoString(filename, &nFileSize, &pFileData);
+
+		if (result != LR_SUCCESS) return result;
 
 		// バッファの領域確保
-		STRING pBuffe = new char[m_nuFileSize + 1];
+		STRING pBuffe = new char[nFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + m_nuFileSize;
+		STRING pBuffeEnd = pBuffe + nFileSize;
 		// 領域をコピーする
-		memcpy(pBuffe, m_pFileData, m_nuFileSize);
-		pBuffe[m_nuFileSize] = '\0';
+		memcpy(pBuffe, pFileData, nFileSize);
+		pBuffe[nFileSize] = '\0';
 
 		// 読み込んだ情報
 		STRING line = pBuffe;
@@ -169,19 +179,29 @@ public:
 		// バッファの終了地点までループする
 		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
 		{
-			// 最初の「改行、タブをスキップする」
-			while (*line == '\n' || *line == '\r' || *line == '\t' || *line == ' ' || *line == '　')++line;
+			while (TxtCtrlSkipCondition(*line))
+				++line;
 
+			// 先頭をendに設定
 			lineEnd = line;
-
-			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')++lineEnd;
-
+			
+			// endを行末までスキップ
+			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')
+				++lineEnd;
 			lineEnd[0] = '\0';
+
+			// 後ろに追加
+			fileInfo.push_back(line);
 		}
 
 		if (pBuffe != nullptr) {
 			delete[] pBuffe;
 			pBuffe = nullptr;
+		}
+
+		if (pFileData != nullptr){
+			delete[]pFileData;
+			pFileData = nullptr;
 		}
 
 		return LR_SUCCESS;
@@ -252,8 +272,8 @@ public:
 
 		return result;
 	}
-private:
-	// 開放
+
+		// 開放
 	inline static void Release(CLoadInitFile *pClass)
 	{
 		if (pClass == nullptr)
@@ -274,8 +294,6 @@ private:
 		delete[] this->m_pFileData;
 		this->m_pFileData = nullptr;
 	}
-
-
 
 	// ファイル情報を文字列に読み込む
 	inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, OPEN_MODE Mode = "rb")
@@ -353,9 +371,9 @@ private:
 				STRING       pTypeEnd;		// 登録用のタイプの最後
 				CONST_STRING pDataStart;	// 登録用のデータの最初
 
-				pDataEnd   = lineEnd - 1;															// 行の最後を設定
+				pDataEnd = lineEnd - 1;															// 行の最後を設定
 				pTypeStart = info.line + 1;															// 最初の [ をスキップ
-				pTypeEnd   = (STRING)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
+				pTypeEnd = (STRING)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
 				pDataStart = pTypeEnd ? GetRangeStrfromChar(pTypeEnd + 1, pDataEnd, '[') : nullptr;	// 2つ目の [ までスキップ
 
 				if (pTypeEnd == '\0' || pDataStart == '\0')continue;
@@ -367,7 +385,7 @@ private:
 				info.entrydata = (STRING)(void*)pDataStart;
 			}
 
-			
+
 			// 登録データの取得条件式
 			funk(info, value);
 		}
@@ -446,14 +464,13 @@ private:
 		return LR_SUCCESS;
 	}
 
+private:
 	// 任意の文字以降の文字列を取得
 	inline static CONST_STRING GetRangeStrfromChar(CONST_STRING cnStr, CONST_STRING cnStrEnd, char marker)
 	{
 		CONST_STRING cnRetStr = (CONST_STRING)memchr(cnStr, (int)marker, cnStrEnd - cnStr);
 		return cnRetStr;
 	}
-
-
 	FILE_SIZE m_nuFileSize;	// ファイルサイズ
 	FILE_DATA m_pFileData;	// ファイルデータ
 };

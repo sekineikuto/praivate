@@ -34,6 +34,11 @@ void CTitleUI::Init(void)
 {
 	// ÉtÉ@ÉCÉãÇ©ÇÁì«Ç›çûÇ›
 	mystd::CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
+
+
+	std::vector<std::string> test;
+	mystd::CLoadFile::GetSplit(CManager::GetFIleName(CManager::FILE_TITLEUI), test);
+	test.clear();
 }
 
 //-------------------------------------------------------------------------------------------------------------
