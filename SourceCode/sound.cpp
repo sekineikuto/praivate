@@ -57,8 +57,8 @@ HRESULT CSound::InitSound(HWND hWnd, const char * pFileName)
 	SOUNDPARAM* pPram = &m_aParam[0];
 
 	// サウンドデータの読み込み
-	mystd::CLoadInitFile::LoadFile(pFileName,
-		[&nCntSound,&pPram](mystd::CLoadInitFile::READINFO& info)
+	mystd::CLoadFile::GetLine(pFileName,
+		[&nCntSound, &pPram](STRING line)
 	{
 		// 変数宣言
 		char aSetingData[128];		// 設定用データ
@@ -68,7 +68,7 @@ HRESULT CSound::InitSound(HWND hWnd, const char * pFileName)
 
 		if (nCntSound < SOUND_LABEL_MAX)
 		{
-			if (sscanf(info.line, "INFO = %s ,%d", aSetingData, &nSetingCntLoop) == 2)
+			if (sscanf(line, "INFO = %s ,%d", aSetingData, &nSetingCntLoop) == 2)
 			{
 				pPram[nCntSound].fileName = aSetingData;
 				pPram[nCntSound].nCntLoop = nSetingCntLoop;

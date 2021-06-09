@@ -206,6 +206,126 @@ public:
 
 		return LR_SUCCESS;
 	}
+
+	// １行ずつ取得する 
+	//$ function -> function(line, T value) { }
+	template<class T, class F>
+	inline static LOADRESULT GetLine(FILE_NAME filename, T value, F function)
+	{
+		// 変数宣言
+		FILE_SIZE nFileSize;			// ファイルサイズ
+		FILE_DATA pFileData = nullptr;	// ファイルデータ
+		LOADRESULT result;
+
+		// ファイル情報を文字列に読み込む
+		result = LoadFileIntoString(filename, &nFileSize, &pFileData);
+
+		if (result != LR_SUCCESS) return result;
+
+		// バッファの領域確保
+		STRING pBuffe = new char[nFileSize + 1];
+		if (pBuffe == nullptr)return B_FAIL;
+
+		// バッファ領域の最終地点
+		STRING pBuffeEnd = pBuffe + nFileSize;
+		// 領域をコピーする
+		memcpy(pBuffe, pFileData, nFileSize);
+		pBuffe[nFileSize] = '\0';
+
+		// 読み込んだ情報
+		STRING line = pBuffe;
+		STRING lineEnd = nullptr;
+
+		// バッファの終了地点までループする
+		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
+		{
+			while (TxtCtrlSkipCondition(*line))
+				++line;
+
+			// 先頭をendに設定
+			lineEnd = line;
+
+			// endを行末までスキップ
+			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')
+				++lineEnd;
+			lineEnd[0] = '\0';
+
+			// 後ろに追加
+			function(line, value);
+		}
+
+		if (pBuffe != nullptr) {
+			delete[] pBuffe;
+			pBuffe = nullptr;
+		}
+
+		if (pFileData != nullptr) {
+			delete[]pFileData;
+			pFileData = nullptr;
+		}
+
+		return LR_SUCCESS;
+	}
+
+	// １行ずつ取得する 
+	//$ Lambda style -> function(line) { }
+	template<class F>
+	inline static LOADRESULT GetLine(FILE_NAME filename,F function)
+	{
+		// 変数宣言
+		FILE_SIZE nFileSize;	// ファイルサイズ
+		FILE_DATA pFileData = nullptr;			// ファイルデータ
+		LOADRESULT result;
+
+		// ファイル情報を文字列に読み込む
+		result = LoadFileIntoString(filename, &nFileSize, &pFileData);
+
+		if (result != LR_SUCCESS) return result;
+
+		// バッファの領域確保
+		STRING pBuffe = new char[nFileSize + 1];
+		if (pBuffe == nullptr)return B_FAIL;
+
+		// バッファ領域の最終地点
+		STRING pBuffeEnd = pBuffe + nFileSize;
+		// 領域をコピーする
+		memcpy(pBuffe, pFileData, nFileSize);
+		pBuffe[nFileSize] = '\0';
+
+		// 読み込んだ情報
+		STRING line = pBuffe;
+		STRING lineEnd = nullptr;
+
+		// バッファの終了地点までループする
+		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
+		{
+			while (TxtCtrlSkipCondition(*line))
+				++line;
+
+			// 先頭をendに設定
+			lineEnd = line;
+
+			// endを行末までスキップ
+			while (lineEnd < pBuffeEnd && *lineEnd != '\n' && *lineEnd != '\r')
+				++lineEnd;
+			lineEnd[0] = '\0';
+
+			// 後ろに追加
+			function(line);
+		}
+
+		if (pBuffe != nullptr) {
+			delete[] pBuffe;
+			pBuffe = nullptr;
+		}
+
+		if (pFileData != nullptr) {
+			delete[]pFileData;
+			pFileData = nullptr;
+		}
+
+		return LR_SUCCESS;
+	}
 };
 
 // 初期化ファイルの読み込み

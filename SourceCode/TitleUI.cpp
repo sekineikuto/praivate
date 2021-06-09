@@ -33,12 +33,7 @@ CTitleUI * CTitleUI::Create(void)
 void CTitleUI::Init(void)
 {
 	// ファイルから読み込み
-	mystd::CLoadInitFile::LoadFile(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
-
-
-	std::vector<std::string> test;
-	mystd::CLoadFile::GetSplit(CManager::GetFIleName(CManager::FILE_TITLEUI), test);
-	test.clear();
+	mystd::CLoadFile::GetLine(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -80,17 +75,15 @@ CUi2d * CTitleUI::Get2dui(int nIndex)
 //-------------------------------------------------------------------------------------------------------------
 // 1行ずつ読み込む
 //-------------------------------------------------------------------------------------------------------------
-void CTitleUI::ReadFromLine(mystd::CLoadInitFile::READINFO& info, std::vector<CUi2d*> *p2dui)
+void CTitleUI::ReadFromLine(char* line, std::vector<CUi2d*> *p2dui)
 {
-	// 変数宣言
-	std::vector<CUi2d*> *pSet = p2dui;
-	if (strcmp(info.line, "SET_UI") == 0)
+	if (strcmp(line, "SET_UI") == 0)
 	{
 		m_bSetingUI = true;
 	}
 	else
 	{// パラメータを設定
-		ReadFromLineSetParam(info.line, pSet);
+		ReadFromLineSetParam(line, p2dui);
 	}
 }
 
