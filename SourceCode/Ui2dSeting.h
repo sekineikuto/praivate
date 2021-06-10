@@ -11,7 +11,8 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "Mylibrary.h"
-
+#include "TextfileController.h"
+#include "manager.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -91,25 +92,43 @@ namespace ui2d
 		D3DXCOLOR   col;			// 色
 	} SETING;
 
-	// 設定情報をロードする
-	inline void LoadSetingInfo(const char *pFileName, std::vector<SETING> &output)
+	class CLoadinfo
 	{
-		// ファイルが無いとき
-		if (pFileName == nullptr)
-			return;
+	public:
+		// 設定情報をロードする
+		inline static void LoadSetingInfo(const char *pFileName, std::vector<SETING> *output)
+		{
+			// 情報を初期化
+			CLoadinfo info;
+			info.bSeting = false;
+			info.output = output;
 
-		// ファイルを開く
-		FILE *pFile = fopen(pFileName, "rb");
+			// 1行ずつ指定された関数に送る
+			mystd::CLoadFile::GetLine(pFileName, &info, ReadFromLine);
+		}
+	private:
+		// 一行から情報を読み取る
+		inline static void ReadFromLine(const char * info, CLoadinfo* load)
+		{
+			if (strcmp(info, "SET_UI") == 0)
+			{
+			}
+			else
+			{// パラメータを設定
+				ReadFromLineSetParam(info, load);
+			}
+		}
+		// 読み取った行からパラメータを設定する
+		inline static void ReadFromLineSetParam(const char * line, CLoadinfo* load)
+		{
 
-		// ファイルが開けない
-		if (pFile == nullptr)
-			return;
+		}
+		bool bSeting;
+		std::vector<std::string> item;
+		std::vector<SETING> *output;
+	};
 
 
-		// ファイルを閉じる
-		fclose(pFile);
-		pFile = nullptr;
 
-	}
 }
 #endif
