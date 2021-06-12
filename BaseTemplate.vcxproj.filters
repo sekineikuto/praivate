@@ -197,6 +197,12 @@
     <ClInclude Include="SourceCode\TextfileController.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\mystd\Component.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceCode\Transform2dComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl">

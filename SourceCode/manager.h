@@ -137,21 +137,21 @@ public:
 #endif
 private:
 	/* -- メンバ変数 -- */
-	static CRenderer	m_Renderer;						// レンダラーポインタ
-	static Ckeyboard	m_Keyboard;						// キーボードのポインタ
-	static CMouse		m_Mouse;							// マウスのポインタ
-	static CGamepad		m_Gamepad;						// ゲームパッドのポインタ
-	static CSound		m_Sound;							// サウンドのポインタ
-	static CDebugProc	m_DebugProc;						// デバッグ処理のポインタ
-	static CCamera		m_Camera;							// カメラのポインタ
-	static CLight		m_Light;							// ライトのポインタ
-	static STRING		m_aFIleName[FILE_NAME::FILE_MAX];	// ファイル名(.iniから読みこんだファイル)
-	static MODE			m_mode;								// モード
-	static int			m_nMyScore;							// スコア保存
-	static CHash		m_Hash;							// ハッシュポインタ
-	static CMode*		m_pModeClass;					// モードクラスのポインタ
-	static CTextureManager * m_pTextureManager;			// テクスチャマネージャー
-	static hash_map*	m_pSeting_map;	// 設定用のハッシュマップ
+	static CRenderer         m_Renderer;						// レンダラーポインタ
+	static Ckeyboard         m_Keyboard;						// キーボードのポインタ
+	static CMouse            m_Mouse;							// マウスのポインタ
+	static CGamepad          m_Gamepad;							// ゲームパッドのポインタ
+	static CSound            m_Sound;							// サウンドのポインタ
+	static CDebugProc        m_DebugProc;						// デバッグ処理のポインタ
+	static CCamera           m_Camera;							// カメラのポインタ
+	static CLight            m_Light;							// ライトのポインタ
+	static STRING            m_aFIleName[FILE_NAME::FILE_MAX];	// ファイル名(.iniから読みこんだファイル)
+	static MODE              m_mode;							// モード
+	static int               m_nMyScore;						// スコア保存
+	static CHash             m_Hash;							// ハッシュポインタ
+	static CMode*            m_pModeClass;						// モードクラスのポインタ
+	static CTextureManager * m_pTextureManager;					// テクスチャマネージャー
+	static hash_map*         m_pSeting_map;						// 設定用のハッシュマップ
 protected:
 };
 
