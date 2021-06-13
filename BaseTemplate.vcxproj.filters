@@ -203,6 +203,9 @@
     <ClInclude Include="SourceCode\Transform2dComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\mystd\CompoBehaviour.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl">

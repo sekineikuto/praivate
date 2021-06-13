@@ -26,13 +26,6 @@ CUi2d * CUi2d::Create(ui2d::SETING &seting, PRIORITY pri)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Init(ui2d::SETING & seting, PRIORITY pri)
 {
-	CScene2D::SetOriginType((ORIGINVERTEXTYPE)seting.nOriginType);
-	CScene2D::SetPosition(seting.pos);
-	CScene2D::SetColor(seting.col);
-	CScene2D::SetRotation(seting.fRotation);
-	CScene2D::SetSize(seting.size);
-	CScene2D::BindTexture(CManager::GetTextureManager()->GetTextureInfo(seting.nTextureID));
-	CScene2D::Init();
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -47,7 +40,6 @@ void CUi2d::Init(void)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Uninit(void)
 {
-	CScene2D::Uninit();
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -55,40 +47,7 @@ void CUi2d::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Update(void)
 {
-	Ckeyboard& key = CManager::GetKeyboard();
 
-	if (key.GetTrigger(DIK_H))
-	{
-		m_UpdateFlags.pos = true;
-		m_fRotation -= 0.1f;
-	}
-	else if (key.GetTrigger(DIK_Y))
-	{
-		m_UpdateFlags.pos = true;
-		m_fRotation += 0.1f;
-	}
-	if (key.GetTrigger(DIK_J))
-	{
-		m_UpdateFlags.pos = true;
-		m_size.x -= 10.0f;
-	}
-	else if (key.GetTrigger(DIK_U))
-	{
-		m_UpdateFlags.pos = true;
-		m_size.x += 10.0f;
-	}
-	if (key.GetTrigger(DIK_K))
-	{
-		m_UpdateFlags.pos = true;
-		m_size.y -= 10.0f;
-	}
-	else if (key.GetTrigger(DIK_I))
-	{
-		m_UpdateFlags.pos = true;
-		m_size.y += 10.0f;
-	}
-
-	CScene2D::Update();
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -96,5 +55,4 @@ void CUi2d::Update(void)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Draw(void)
 {
-	CScene2D::Draw();
 }

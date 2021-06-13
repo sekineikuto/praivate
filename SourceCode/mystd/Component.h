@@ -20,6 +20,16 @@ _BEGIN_MYSTD
 class IComponent
 {
 public:
+	IComponent() {}
+	virtual ~IComponent() {}
+
+	virtual void Start(void) = 0;
+	virtual void Update(void) = 0;
+
+
+	//! 特性のアクティブを設定
+	bool enabled = true;
+
 private:
 };
 

@@ -193,17 +193,6 @@ typedef enum
 	ORIGINVERTEXTYPE_MAX				// 最大数
 } ORIGINVERTEXTYPE;
 
-// 演算子ID
-typedef enum
-{
-	OPERATOR_ID_NONE = -1,				// 無し
-	OPERATOR_ID_ADDITION,				// 加算
-	OPERATOR_ID_SUBTRACTION,			// 減算
-	OPERATOR_ID_MULTIPLICATION,			// 乗算
-	OPERATOR_ID_DIVISION,				// 除算
-	OPERATOR_ID_MAX						// 最大数
-} OPERATOR_ID;
-
 //-------------------------------------------------------------------------------------------------------------
 // 型、構造体定義
 //-------------------------------------------------------------------------------------------------------------

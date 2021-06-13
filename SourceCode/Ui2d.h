@@ -12,15 +12,16 @@
 //-------------------------------------------------------------------------------------------------------------
 #include "Scene2D.h"
 #include "Ui2dSeting.h"
+#include "mystd\CompoBehaviour.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
 //-------------------------------------------------------------------------------------------------------------
-class CUi2d : public CScene2D
+class CUi2d : public CScene, public mystd::CCompoBehaviour
 {
 public:
-	CUi2d() : CScene2D(PRIORITY_2DUI) {}
-	CUi2d(PRIORITY pri) : CScene2D(pri) {}												// コンストラクタ
+	CUi2d() : CScene(PRIORITY_2DUI) {}
+	CUi2d(PRIORITY pri) : CScene(pri) {}												// コンストラクタ
 	~CUi2d() {}																			// デストラクタ
 
 	static CUi2d * Create(ui2d::SETING &seting, PRIORITY pri = PRIORITY_2DUI);		// 生成
