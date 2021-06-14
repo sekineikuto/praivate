@@ -23,9 +23,16 @@ class Image2D : public IComponent
 public:
 	/* メンバ関数 */
 	// コンストラクタ
-	Image2D(){}
+	Image2D()
+	{
+
+	}
+
 	// デストラクタ
-	~Image2D(){}
+	~Image2D()
+	{
+
+	}
 
 	// 開始処理
 	void Start(void)
@@ -35,6 +42,12 @@ public:
 
 	// 更新
 	void Update(void)
+	{
+
+	}
+
+	// 描画
+	void Draw(void)
 	{
 
 	}

@@ -184,6 +184,7 @@
     <ClInclude Include="SourceCode\mystd\CompoBehaviour.h" />
     <ClInclude Include="SourceCode\mystd\Component.h" />
     <ClInclude Include="SourceCode\mystd\hash_map.h" />
+    <ClInclude Include="SourceCode\mystd\Image2d.h" />
     <ClInclude Include="SourceCode\mystd\mystd.h" />
     <ClInclude Include="SourceCode\mystd\types.h" />
     <ClInclude Include="SourceCode\mystd\utility.h" />
@@ -215,7 +216,6 @@
     <ClInclude Include="SourceCode\title.h" />
     <ClInclude Include="SourceCode\TitleUI.h" />
     <ClInclude Include="SourceCode\Ui2dSeting.h" />
-    <ClInclude Include="SourceCode\Transform2dComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl" />

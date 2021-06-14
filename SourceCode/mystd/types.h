@@ -53,6 +53,33 @@ typedef struct _RECTSIZE
 	float Width, Height;
 }RECTSIZE;
 
+//-------------------------------------------------------------------------------------------------------------
+// 構造体定義
+//-------------------------------------------------------------------------------------------------------------
+typedef struct Transform2D
+{
+public:
+	/* メンバ関数 */
+	// コンストラクタ
+	Transform2D() {}
+	// コンストラクタ
+	Transform2D(float fPosX, float fPosY, float fPosZ, float fSizeX, float fSizeY, PIVOTTYPE inPivot, float fRotation, float fScaleX, float fScaleY)
+		: Position(fPosX, fPosY, fPosZ), Size(fSizeX, fSizeY), Pivot(inPivot), Rotation(fRotation), Scale(fScaleX, fScaleY) {}
+	// コンストラクタ
+	Transform2D(D3DXVECTOR3 inPos, RECTSIZE niSize, PIVOTTYPE inPivot, float inRotation, D3DXVECTOR2 inScale)
+		:Position(inPos), Size(niSize), Pivot(inPivot), Rotation(inRotation), Scale(inScale) {}
+
+	// デストラクタ
+	~Transform2D() {}
+
+	/* メンバ変数 */
+	D3DXVECTOR3 Position;	// 位置
+	RECTSIZE    Size;		// サイズ
+	PIVOTTYPE   Pivot;		// ピボット種類
+	float       Rotation;	// 回転
+	D3DXVECTOR2 Scale;		// スケール
+}Transform2D;
+
 _END_MYSTD
 
 #endif

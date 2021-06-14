@@ -203,7 +203,7 @@
     <ClInclude Include="SourceCode\mystd\CompoBehaviour.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
-    <ClInclude Include="SourceCode\Transform2dComponent.h">
+    <ClInclude Include="SourceCode\mystd\Image2d.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
   </ItemGroup>
