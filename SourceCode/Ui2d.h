@@ -13,6 +13,7 @@
 #include "Scene2D.h"
 #include "Ui2dSeting.h"
 #include "mystd\CompoBehaviour.h"
+#include "mystd\types.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
@@ -35,6 +36,7 @@ public:
 private:
 
 protected:
+	mystd::Transform2D transform;		// トランスフォーム
 };
 
 

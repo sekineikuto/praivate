@@ -18,5 +18,7 @@
 //-------------------------------------------------------------------------------------------------------------
 #define _BEGIN_MYSTD namespace mystd {
 #define _END_MYSTD }
+#define _MYSTD ::mystd::
+
 
 #endif // _MYSTD_H_

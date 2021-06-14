@@ -26,11 +26,10 @@ public:
 	virtual void Start(void) = 0;
 	virtual void Update(void) = 0;
 
-
-	//! 特性のアクティブを設定
-	bool enabled = true;
-
 private:
+protected:
+	// アクティブを設定
+	bool enabled = true;
 };
 
 

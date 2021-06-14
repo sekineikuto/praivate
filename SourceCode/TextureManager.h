@@ -35,7 +35,7 @@ public:
 	void               Unload(void);									// 開放
 	LPDIRECT3DTEXTURE9 GetTextureInfo(int nIndex);						// テクスチャの取得
 	int                GetNumTextureMax(void);							// テクスチャ数の最大
-	CSTRING            GetFileName(const int nIndex);					// ファイル名の取得
+	_MYSTD CSTRING     GetFileName(const int nIndex);					// ファイル名の取得
 private:
 	/* メンバ関数 */
 	static void ReadFromLine(mystd::CLoadInitFile::READINFO& info, std::vector<std::string> *filename);	// 1行ずつ読み込む

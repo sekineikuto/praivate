@@ -125,7 +125,7 @@ int CTextureManager::GetNumTextureMax(void)
 //-------------------------------------------------------------------------------------------------------------
 // ƒtƒ@ƒCƒ‹–¼‚ÌŽæ“¾
 //-------------------------------------------------------------------------------------------------------------
-CSTRING CTextureManager::GetFileName(const int nIndex)
+_MYSTD CSTRING CTextureManager::GetFileName(const int nIndex)
 {
 	return m_pFileName[nIndex].data();
 }

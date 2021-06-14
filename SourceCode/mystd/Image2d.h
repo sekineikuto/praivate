@@ -1,37 +1,54 @@
 //*************************************************************************************************************
 //
-// 2Dのトランスフォームコンポーネント処理[Transform2dComponent.h]
-// Author : Sekine Ikuto
+// 画像2D処理[Image2d.h]
+// Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
-#ifndef _TRANSFORM2DCOMPONENT_H_
-#define _TRANSFORM2DCOMPONENT_H_
+#ifndef _IMAGE2D_H_
+#define _IMAGE2D_H_
 
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "mystd\Component.h"
-#include "mystd\types.h"
+#include "types.h"
+#include "Component.h"
+
+_BEGIN_MYSTD
+
 //-------------------------------------------------------------------------------------------------------------
 // クラス定義
 //-------------------------------------------------------------------------------------------------------------
-class Transform2D : public mystd::IComponent
+class Image2D : public IComponent
 {
 public:
 	/* メンバ関数 */
-	Transform2D() {}
-	~Transform2D() {}
+	// コンストラクタ
+	Image2D(){}
+	// デストラクタ
+	~Image2D(){}
 
-	void Start(void) {}
-	void Update(void) {}
+	// 開始処理
+	void Start(void)
+	{
+
+	}
+
+	// 更新
+	void Update(void)
+	{
+
+	}
 
 	/* メンバ変数 */
-	D3DXVECTOR3 Position;	// 位置
-	RECTSIZE    Size;		// サイズ
-	PIVOTTYPE   Pivot;		// ピボット種類
-	float       Rotation;	// 回転
-	D3DXVECTOR2 Scale;		// スケール
+
+private:
+
 };
+
+
+
+
+_END_MYSTD
 
 
 

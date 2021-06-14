@@ -21,9 +21,12 @@ _BEGIN_MYSTD
 class CCompoBehaviour
 {
 public:
+	// コンストラクタ
 	CCompoBehaviour() {}
+	// デストラクタ
 	~CCompoBehaviour() {}
 
+	// コンポーネントの追加
 	template<typename T>
 	T* AddComponent()
 	{
@@ -34,7 +37,6 @@ public:
 				return nullptr;
 			}
 		}
-
 
 		T* t = new T();
 		IComponent* pComponent = static_cast<IComponent*>(t);
@@ -47,6 +49,7 @@ public:
 		return nullptr;
 	}
 
+	// コンポーネントの取得
 	template<typename T>
 	T* GetComponent()
 	{
@@ -61,6 +64,7 @@ public:
 		return nullptr;
 	}
 
+	// コンポーネントを削除
 	template<typename T>
 	void RemoveComponent()
 	{
@@ -74,7 +78,7 @@ public:
 		}
 	}
 private:
-	std::vector<IComponent> CompoList;
+	std::vector<IComponent> CompoList;	// コンポーネントリスト
 }; 
 
 
