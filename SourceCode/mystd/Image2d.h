@@ -22,49 +22,41 @@ class Image2D : public IVisualComponent
 {
 public:
 	/* メンバ関数 */
-
 	// コンストラクタ
-	Image2D()
-	{
-
-	}
+	Image2D();
 
 	// デストラクタ
-	~Image2D()
-	{
-
-	}
+	~Image2D();
 
 	// 開始処理
-	void Start(void)
-	{
-
-	}
+	void Start(void);
 
 	// 更新
-	void Update(void)
-	{
-
-	}
+	void Update(void);
 
 	// 描画
-	void Draw(void)
-	{
+	void Draw(void);
 
-	}
+private:
+	// 頂点情報の作成
+	HRESULT MakeVertex(void);
 
+	// 頂点位置の設定
+	void SetVertexPosition(void);
 
+	// 頂点カラーの設定
+	void SetVertexColor(void);
+
+	// テクスチャ位置の設定
+	void SetTexturePosition(void);
+
+public:
 	/* メンバ変数 */
 	LPDIRECT3DVERTEXBUFFER9 pVtxBuff;	// 頂点バッファへのポインタ
 	LPDIRECT3DTEXTURE9      pTexture;	// テクスチャへのポインタ
 	D3DXCOLOR               color;		// カラー
-private:
-	Transform2D *pTransform;
+	Transform2D *           pTransform;	// トランスフォームポインタ
 };
-
-
-
-
 _END_MYSTD
 
 
