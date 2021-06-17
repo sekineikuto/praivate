@@ -56,6 +56,25 @@ typedef struct _RECTSIZE
 //-------------------------------------------------------------------------------------------------------------
 // 構造体定義
 //-------------------------------------------------------------------------------------------------------------
+
+// 2Dポリゴン頂点フォーマットに合わせた構造体を定義
+typedef struct
+{
+	D3DXVECTOR3 pos;						// 頂点の座標
+	float		rhw;						// 1.0で固定同次座標
+	D3DCOLOR	col;						// 頂点カラー
+	D3DXVECTOR2	tex;						// テクスチャ座標
+} VERTEX_2D;
+
+// 3Dポリゴン頂点フォーマットに合わせた構造体を定義
+typedef struct
+{
+	D3DXVECTOR3 pos;	// 頂点座標
+	D3DXVECTOR3 nor;	// 法線ベクトル
+	D3DCOLOR	col;	// 頂点カラー
+	D3DXVECTOR2 tex;	// テクスチャ座標
+} VERTEX_3D;
+
 typedef struct Transform2D
 {
 public:
@@ -79,6 +98,8 @@ public:
 	float       Rotation;	// 回転
 	D3DXVECTOR2 Scale;		// スケール
 }Transform2D;
+
+
 
 _END_MYSTD
 

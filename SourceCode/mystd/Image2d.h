@@ -28,7 +28,7 @@ public:
 	// デストラクタ
 	~Image2D();
 
-	// 開始処理
+	// 処理の開始
 	void Start(void);
 
 	// 更新
@@ -56,6 +56,7 @@ public:
 	LPDIRECT3DTEXTURE9      pTexture;	// テクスチャへのポインタ
 	D3DXCOLOR               color;		// カラー
 	Transform2D *           pTransform;	// トランスフォームポインタ
+	VERTEX_2D*              pVtx;		// 頂点ポインタ
 };
 _END_MYSTD
 

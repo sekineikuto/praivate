@@ -11,6 +11,7 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "main.h"
+#include "mystd\types.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -23,22 +24,8 @@ class CFade;
 class CRenderer
 {
 public:
-	typedef struct
-	{
-		D3DXVECTOR3 pos;						// 頂点の座標
-		float		rhw;						// 1.0で固定同次座標
-		D3DCOLOR	col;						// 頂点カラー
-		D3DXVECTOR2	tex;						// テクスチャ座標
-	} VERTEX_2D;
-
-	// ３Ｄポリゴン頂点フォーマットに合わせた構造体を定義
-	typedef struct
-	{
-		D3DXVECTOR3 pos;	// 頂点座標
-		D3DXVECTOR3 nor;	// 法線ベクトル
-		D3DCOLOR	col;	// 頂点カラー
-		D3DXVECTOR2 tex;	// テクスチャ座標
-	} VERTEX_3D;
+	using VERTEX_2D = mystd::VERTEX_2D;
+	using VERTEX_3D = mystd::VERTEX_3D;
 
 
 	/* -- メンバ関数 -- */
