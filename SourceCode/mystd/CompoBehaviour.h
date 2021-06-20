@@ -4,6 +4,7 @@
 // Author : Sekine Ikuto
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _COMPOBEHAVIOUR_H_
 #define _COMPOBEHAVIOUR_H_
 

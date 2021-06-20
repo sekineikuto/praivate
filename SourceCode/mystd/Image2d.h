@@ -4,6 +4,7 @@
 // Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _IMAGE2D_H_
 #define _IMAGE2D_H_
 
@@ -42,13 +43,13 @@ private:
 	HRESULT MakeVertex(void);
 
 	// 頂点位置の設定
-	void SetVertexPosition(void);
+	void SetVertexPosition(VERTEX_2D *pVtx);
 
 	// 頂点カラーの設定
-	void SetVertexColor(void);
+	void SetVertexColor(VERTEX_2D *pVtx);
 
 	// テクスチャ位置の設定
-	void SetTexturePosition(void);
+	void SetTexturePosition(VERTEX_2D *pVtx);
 
 public:
 	/* メンバ変数 */

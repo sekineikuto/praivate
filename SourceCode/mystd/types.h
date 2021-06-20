@@ -4,6 +4,7 @@
 // Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _MYSTD_TYPES_H_
 #define _MYSTD_TYPES_H_
 
@@ -43,19 +44,7 @@ typedef char *       STRING;
 //-------------------------------------------------------------------------------------------------------------
 // 構造体定義
 //-------------------------------------------------------------------------------------------------------------
-typedef struct _RECTSIZE
-{
-	_RECTSIZE() {}
-	_RECTSIZE(const float fWidth, const float fHeight) : Width(fWidth), Height(fHeight) {}
-	_RECTSIZE(_RECTSIZE &src) : Width(src.Width), Height(src.Height) {}
-	_RECTSIZE(D3DXVECTOR2 &src) : Width(src.x), Height(src.y) {}
 
-	float Width, Height;
-}RECTSIZE;
-
-//-------------------------------------------------------------------------------------------------------------
-// 構造体定義
-//-------------------------------------------------------------------------------------------------------------
 
 // 2Dポリゴン頂点フォーマットに合わせた構造体を定義
 typedef struct
@@ -75,6 +64,43 @@ typedef struct
 	D3DXVECTOR2 tex;	// テクスチャ座標
 } VERTEX_3D;
 
+// 矩形のサイズ
+typedef struct _RECTSIZE
+{
+	inline _RECTSIZE() {};
+	inline _RECTSIZE(const float fWidth, const float fHeight) : Width(fWidth), Height(fHeight) {}
+	inline _RECTSIZE(CONST _RECTSIZE &src) : Width(src.Width), Height(src.Height) {}
+	inline _RECTSIZE(D3DXVECTOR2 &src) : Width(src.x), Height(src.y) {}
+	
+	// casting
+	//inline operator D3DXVECTOR2& () { return D3DXVECTOR2(Width, Height); }
+	//inline operator CONST D3DXVECTOR2& () const { return D3DXVECTOR2(Width, Height); }
+
+	// assignment operators
+	inline _RECTSIZE& operator += (CONST _RECTSIZE& src) { this->Width += src.Width; this->Height += src.Height; return *this; }
+	inline _RECTSIZE& operator -= (CONST _RECTSIZE& src) { this->Width -= src.Width; this->Height -= src.Height; return *this; }
+	inline _RECTSIZE& operator *= (FLOAT src) { this->Width *= src; this->Height *= src; return *this; }
+	inline _RECTSIZE& operator /= (FLOAT src) { this->Width /= src; this->Height /= src; return *this; }
+
+	// unary operators
+	inline _RECTSIZE operator + () const { return *this; }
+	inline _RECTSIZE operator - () const { return _RECTSIZE(-this->Width, -this->Width); }
+
+	// binary operators
+	inline _RECTSIZE operator + (CONST _RECTSIZE& src) const { return _RECTSIZE(this->Width + src.Width, this->Height + src.Height); }
+	inline _RECTSIZE operator - (CONST _RECTSIZE& src) const { return _RECTSIZE(this->Width - src.Width, this->Height - src.Height); }
+	inline _RECTSIZE operator * (FLOAT src) const { return _RECTSIZE(this->Width * src, this->Height * src); }
+	inline _RECTSIZE operator / (FLOAT src) const { return _RECTSIZE(this->Width / src, this->Height / src); }
+
+	//inline friend _RECTSIZE operator * (FLOAT srcA, CONST _RECTSIZE& srcB) { return _RECTSIZE(srcB.Width * srcA, srcB.Height * srcA); }
+
+	inline BOOL operator == (CONST _RECTSIZE& src) const { return this->Width == src.Width && this->Height == src.Height; }
+	inline BOOL operator != (CONST _RECTSIZE& src) const { return this->Width != src.Width || this->Height != src.Height; }
+
+	float Width, Height;
+}RECTSIZE;
+
+// トランスフォーム2D
 typedef struct Transform2D
 {
 public:

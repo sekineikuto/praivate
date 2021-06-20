@@ -4,6 +4,7 @@
 // Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _MYSTD_HASH_MAP_H_
 #define _MYSTD_HASH_MAP_H_
 

@@ -4,6 +4,7 @@
 // Author : Sekine Ikuto
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _TEXTFILECONTROLLER_H_
 #define _TEXTFILECONTROLLER_H_
 

@@ -4,6 +4,7 @@
 // Author : IKUTO SEKINE
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _MYSTD_UTILITY_H_
 #define _MYSTD_UTILITY_H_
 
@@ -11,6 +12,7 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "mystd.h"
+#include "d3dx9.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
@@ -22,17 +24,17 @@
 _BEGIN_MYSTD
 
 // *Can be halved by multiplication
-float fHalfSize = 0.5f;
+static float fHalfSize = 0.5f;
 
 // *Half of pi
-float fHalf_PI = D3DX_PI * fHalfSize;
+static float fHalf_PI = D3DX_PI * fHalfSize;
 
 // *Prints half the value of the argument set in rsc
 template<class T>
-void Convert_to_half_size(T& out,T& rsc)
+inline void Convert_to_half_size(T& out,T& rsc)
 {
 	out = rsc * fHalfSize;
 }
 
 _END_MYSTD
-#endif // _MYSTD_H_
+#endif

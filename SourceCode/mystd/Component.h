@@ -4,6 +4,7 @@
 // Author : Sekine Ikuto
 //
 //*************************************************************************************************************
+#pragma once
 #ifndef _COMPONENT_H_
 #define _COMPONENT_H_
 
@@ -23,8 +24,14 @@ public:
 	IComponent() {}
 	virtual ~IComponent() {}
 
+	virtual void Start(void) = 0;
+	virtual void Update(void) = 0;
+	virtual void Draw(void) = 0;
+
 private:
 protected:
+	// アクティブを設定
+	bool enabled = true;
 };
 
 class IVisualComponent : public IComponent
@@ -39,8 +46,7 @@ public:
 
 private:
 protected:
-	// アクティブを設定
-	bool enabled = true;
+
 };
 
 
@@ -52,11 +58,10 @@ public:
 
 	virtual void Start(void) = 0;
 	virtual void Update(void) = 0;
+	virtual void Draw(void) {}
 
 private:
 protected:
-	// アクティブを設定
-	bool enabled = true;
 };
 
 
