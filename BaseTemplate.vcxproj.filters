@@ -209,6 +209,9 @@
     <ClInclude Include="SourceCode\mystd\Image2d.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\mystd\Include.h">
+      <Filter>ヘッダー ファイル\mystd</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl">

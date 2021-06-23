@@ -7,6 +7,7 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
+#include "Include.h"
 #include "Image2d.h"
 #include "utility.h"
 
@@ -50,6 +51,47 @@ void mystd::Image2D::Draw(void)
 //-------------------------------------------------------------------------------------------------------------
 HRESULT mystd::Image2D::MakeVertex(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();
+
+	// 頂点バッファの生成
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+		D3DUSAGE_WRITEONLY,
+		FVF_VERTEX_2D,									// 頂点フォーマット
+		D3DPOOL_MANAGED,
+		&pVtxBuff,
+		NULL);
+
+	// 頂点情報へのポインタ
+	VERTEX_2D *pVtx;
+
+	// 頂点データの範囲ロックし、頂点バッファへのポインタ取得
+	pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 頂点位置の設定
+	SetVertexPosition(pVtx);
+
+	// Z軸は使う必要ないので0.0f
+	pVtx[0].pos.z =
+		pVtx[1].pos.z =
+		pVtx[2].pos.z =
+		pVtx[3].pos.z = 0.0f;
+
+	// 同次座標の設定
+	pVtx[0].rhw =
+		pVtx[1].rhw =
+		pVtx[2].rhw =
+		pVtx[3].rhw = 1.0f;
+
+	// 頂点カラーの設定
+	SetVertexColor(pVtx);
+
+	// テクスチャ座標
+	SetTexturePosition(pVtx);
+
+	// 頂点データをアンロック
+	pVtxBuff->Unlock();
+
 	return E_NOTIMPL;
 }
 
@@ -124,6 +166,7 @@ void mystd::Image2D::SetVertexPosition(VERTEX_2D *pVtx)
 //-------------------------------------------------------------------------------------------------------------
 void mystd::Image2D::SetVertexColor(VERTEX_2D *pVtx)
 {
+	pVtx[0].col = pVtx[1].col = pVtx[2].col = pVtx[3].col = color;
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -131,4 +174,8 @@ void mystd::Image2D::SetVertexColor(VERTEX_2D *pVtx)
 //-------------------------------------------------------------------------------------------------------------
 void mystd::Image2D::SetTexturePosition(VERTEX_2D *pVtx)
 {
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 }
