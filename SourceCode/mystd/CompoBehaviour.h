@@ -31,7 +31,7 @@ public:
 	template<typename T>
 	T* AddComponent()
 	{
-		for (int i = 0; i < (int)CompoList.size(); i++)
+		for (auto& compo : CompoList)
 		{
 			if (dynamic_cast<T*>(compo) != nullptr)
 			{
@@ -43,6 +43,7 @@ public:
 		IComponent* pComponent = static_cast<IComponent*>(t);
 		if (pComponent != nullptr)
 		{
+			pComponent->parent = this;
 			CompoList.push_back(pComponent);
 			return t;
 		}
@@ -54,9 +55,9 @@ public:
 	template<typename T>
 	T* GetComponent()
 	{
-		for (IComponent& compo : CompoList)
+		for (auto &compo : CompoList)
 		{
-			T* component = dynamic_cast<T*>(compo);
+			T* component = dynamic_cast<T*>(&compo);
 			if (component != nullptr)
 			{
 				return component;
@@ -69,7 +70,7 @@ public:
 	template<typename T>
 	void RemoveComponent()
 	{
-		for (IComponent& compo : CompoList)
+		for (auto& compo : CompoList)
 		{
 			T* Component = dynamic_cast<T*>(compo);
 			if (Component != nullptr)

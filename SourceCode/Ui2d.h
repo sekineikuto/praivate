@@ -37,8 +37,6 @@ public:
 private:
 
 protected:
-	/* メンバ変数 */
-	mystd::Transform2D transform;		// トランスフォーム
 };
 
 
