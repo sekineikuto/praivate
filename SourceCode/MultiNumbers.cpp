@@ -35,7 +35,7 @@ CMultiNumbers * CMultiNumbers::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR
 {
 	CMultiNumbers *pMultiNUmbers = new CMultiNumbers(CScene::PRIORITY_2DUI);
 	pMultiNUmbers->Init(pos, col, size, fRotation, nValue);
-	pMultiNUmbers->SetObjectTyoe(CScene::TYPE::TYPE_UI);
+	pMultiNUmbers->SetObjectType(CScene::TYPE::TYPE_UI);
 	return pMultiNUmbers;
 }
 

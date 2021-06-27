@@ -215,6 +215,9 @@
     <ClInclude Include="SourceCode\mystd\transform.h">
       <Filter>ヘッダー ファイル\mystd</Filter>
     </ClInclude>
+    <ClInclude Include="SourceCode\GameObject.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SourceCode\mylibrary.inl">

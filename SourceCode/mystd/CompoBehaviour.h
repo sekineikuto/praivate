@@ -81,8 +81,10 @@ public:
 	template<typename T>
 	void RemoveComponent()
 	{
+
 	}
 
+	// コンポーネントを削除
 	template<typename T>
 	void Destroy(T* src)
 	{

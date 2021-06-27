@@ -72,15 +72,17 @@ public:
 	static void    UpdataAll(void);			// 全ての更新処理
 	static void    DrawAll(void);			// 全ての描画処理
 	static void    ReleaseAll(void);		// 全ての開放処理
+
 	void           Release(void);			// 開放処理
 	void           ListRelease(void);		// リストからの開放処理
 
-	inline void SetObjectTyoe(TYPE type)    { m_type = type; }			// 種類の設定
-	inline TYPE GetObjectTyoe(void)         { return m_type; }			// 種類の取得
+	inline void SetObjectType(TYPE type)    { m_type = type; }			// 種類の設定
+	inline TYPE GetObjectType(void)         { return m_type; }			// 種類の取得
 	inline static int GetNumAll(void)       { return m_nNumAll; }		// 全ての生成された数
 	inline PRIORITY GetPriority(void)       { return m_priority; }		// シーンの描画優先順の取得
 
 private:
+protected:
 	static int     m_nNumAll;					// 総シーン数
 	static CScene* m_pTop[PRIORITY_MAX];		// 先頭へのオブジェクトポインタ
 	static CScene* m_pCur[PRIORITY_MAX];		// 最後尾オブジェクトへのポインタ
@@ -89,7 +91,6 @@ private:
 	CScene*        m_pPrev;						// 前のオブジェクトへのポインタ
 	CScene*        m_pNext;						// 次のオブジェクトへのポインタ
 	bool           m_bDie;						// 死亡フラグ
-protected:
 };
 
 #endif
