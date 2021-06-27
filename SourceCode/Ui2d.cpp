@@ -10,6 +10,7 @@
 #include "Ui2d.h"
 #include "keyboard.h"
 #include "TextureManager.h"
+#include "mystd\transform.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // ê∂ê¨
@@ -26,6 +27,9 @@ CUi2d * CUi2d::Create(ui2d::SETING &seting, PRIORITY pri)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Init(ui2d::SETING & seting, PRIORITY pri)
 {
+	AddComponent<_MYSTD Transform2D>();
+	auto test = GetComponent<_MYSTD Transform2D>();
+	Destroy(test);
 }
 
 //-------------------------------------------------------------------------------------------------------------

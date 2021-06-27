@@ -23,15 +23,26 @@ class CCompoBehaviour
 {
 public:
 	// コンストラクタ
-	CCompoBehaviour() {}
+	CCompoBehaviour()
+	{
+
+	}
+
 	// デストラクタ
-	~CCompoBehaviour() {}
+	~CCompoBehaviour()
+	{
+		for (auto compo : CompoList)
+		{
+			delete compo;
+			compo = nullptr;
+		}
+	}
 
 	// コンポーネントの追加
 	template<typename T>
 	T* AddComponent()
 	{
-		for (auto& compo : CompoList)
+		for (auto compo : CompoList)
 		{
 			if (dynamic_cast<T*>(compo) != nullptr)
 			{
@@ -39,13 +50,13 @@ public:
 			}
 		}
 
-		T* t = new T();
-		IComponent* pComponent = static_cast<IComponent*>(t);
+		T* pNew = new T();
+		IComponent* pComponent = static_cast<IComponent*>(pNew);
 		if (pComponent != nullptr)
 		{
 			pComponent->parent = this;
 			CompoList.push_back(pComponent);
-			return t;
+			return pNew;
 		}
 
 		return nullptr;
@@ -55,9 +66,9 @@ public:
 	template<typename T>
 	T* GetComponent()
 	{
-		for (auto &compo : CompoList)
+		for (auto compo : CompoList)
 		{
-			T* component = dynamic_cast<T*>(&compo);
+			T* component = dynamic_cast<T*>(compo);
 			if (component != nullptr)
 			{
 				return component;
@@ -70,17 +81,26 @@ public:
 	template<typename T>
 	void RemoveComponent()
 	{
-		for (auto& compo : CompoList)
-		{
-			T* Component = dynamic_cast<T*>(compo);
-			if (Component != nullptr)
-			{
-				CompoList.erase(i);
-			}
-		}
 	}
+
+	template<typename T>
+	void Destroy(T* src)
+	{
+		IComponent* pComponent = static_cast<IComponent*>(src);
+		
+		if (pComponent == nullptr)
+			return;
+
+		delete src;
+
+		int nIdx = CompoList.front() - pComponent;
+		CompoList.erase(CompoList.begin() + nIdx);
+		
+		src = nullptr;
+	}
+
 private:
-	std::vector<IComponent> CompoList;	// コンポーネントリスト
+	std::vector<IComponent*> CompoList;	// コンポーネントリスト
 }; 
 
 
