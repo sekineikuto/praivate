@@ -27,7 +27,7 @@ class CGameObject : public CScene, public mystd::CCompoBehaviour
 public:
 	/* メンバ関数 */
 	CGameObject(PRIORITY pri) : CScene(pri) {}	// コンストラクタ
-	~CGameObject() {}							// デストラクタ
+	virtual ~CGameObject() {}					// デストラクタ
 
 	virtual void Init(void) = 0;				// 初期化
 	virtual void Uninit(void) = 0;				// 終了
