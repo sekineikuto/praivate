@@ -114,28 +114,28 @@ void mystd::Image2D::SetVertexPosition(VERTEX_2D *pVtx)
 	switch (pTransform->Pivot)
 	{
 	case PIVOTTYPE_LOWERLEFT:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*pTransform->Size.Height;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*pTransform->Size.Height;
 		break;
 	case PIVOTTYPE_LOWERCENTER:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height + sinf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height + cosf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*pTransform->Size.Height + sinf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*pTransform->Size.Height + cosf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
 		break;
 	case PIVOTTYPE_LOWERRIGHT:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height + sinf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*pTransform->Size.Height + cosf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*pTransform->Size.Height + sinf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*pTransform->Size.Height + cosf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
 		break;
 	case PIVOTTYPE_CENTERLEFT:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*halfsize.y;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*halfsize.y;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*halfsize.y;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*halfsize.y;
 		break;
 	case PIVOTTYPE_CENTER:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*halfsize.y + sinf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*halfsize.y + cosf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*halfsize.y + sinf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*halfsize.y + cosf(-mystd::fHalf_PI - pTransform->Rotation)*halfsize.x;
 		break;
 	case PIVOTTYPE_CENTERRIGHT:
-		pVtx[0].pos.x = pTransform->Position.x + sinf(D3DX_PI - pTransform->Rotation)*halfsize.y + sinf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
-		pVtx[0].pos.y = pTransform->Position.y + cosf(D3DX_PI - pTransform->Rotation)*halfsize.y + cosf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
+		pVtx[0].pos.x = pTransform->Position.x + sinf(fPi - pTransform->Rotation)*halfsize.y + sinf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
+		pVtx[0].pos.y = pTransform->Position.y + cosf(fPi - pTransform->Rotation)*halfsize.y + cosf(-mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;
 		break;
 	case PIVOTTYPE_UPPERLEFT:
 		pVtx[0].pos.x = pTransform->Position.x;

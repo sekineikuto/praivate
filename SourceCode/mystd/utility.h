@@ -12,11 +12,11 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "mystd.h"
-#include "d3dx9.h"
 
 //-------------------------------------------------------------------------------------------------------------
-// マクロ定義
+// マクロ関数
 //-------------------------------------------------------------------------------------------------------------
+//#define iif(a, b, c) a ? b : c
 
 //-------------------------------------------------------------------------------------------------------------
 // 名前空間定義
@@ -24,10 +24,13 @@
 _BEGIN_MYSTD
 
 // *Can be halved by multiplication
-static float fHalfSize = 0.5f;
+static constexpr float fHalfSize = 0.5f;
 
-// *Half of pi
-static float fHalf_PI = D3DX_PI * fHalfSize;
+// Pi
+static constexpr float fPi = 3.141592654f;
+
+// *Half of Pi
+static constexpr float fHalf_PI = fPi * fHalfSize;
 
 // *Prints half the value of the argument set in rsc
 template<class T>

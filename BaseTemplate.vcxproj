@@ -185,6 +185,7 @@
     <ClInclude Include="SourceCode\GameObject.h" />
     <ClInclude Include="SourceCode\mystd\CompoBehaviour.h" />
     <ClInclude Include="SourceCode\mystd\Component.h" />
+    <ClInclude Include="SourceCode\mystd\easings.h" />
     <ClInclude Include="SourceCode\mystd\hash_map.h" />
     <ClInclude Include="SourceCode\mystd\transform.h" />
     <ClInclude Include="SourceCode\mystd\Image2d.h" />
