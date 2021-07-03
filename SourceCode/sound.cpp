@@ -58,7 +58,7 @@ HRESULT CSound::InitSound(HWND hWnd, const char * pFileName)
 
 	// サウンドデータの読み込み
 	mystd::CLoadFile::GetLine(pFileName,
-		[&nCntSound, &pPram](STRING line)
+		[&nCntSound, &pPram](mystd::string_t line)
 	{
 		// 変数宣言
 		char aSetingData[128];		// 設定用データ

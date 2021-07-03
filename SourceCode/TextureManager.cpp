@@ -41,10 +41,11 @@ CTextureManager * CTextureManager::Create(void)
 //-------------------------------------------------------------------------------------------------------------
 void CTextureManager::Release(CTextureManager * src)
 {
-	if (src == nullptr)
-		return;
-	delete src;
-	src = nullptr;
+	if (src != nullptr)
+	{
+		delete src;
+		src = nullptr;
+	}
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -125,7 +126,7 @@ int CTextureManager::GetNumTextureMax(void)
 //-------------------------------------------------------------------------------------------------------------
 // ƒtƒ@ƒCƒ‹–¼‚ÌŽæ“¾
 //-------------------------------------------------------------------------------------------------------------
-_MYSTD CSTRING CTextureManager::GetFileName(const int nIndex)
+mystd::const_string_t CTextureManager::GetFileName(const int nIndex)
 {
 	return m_pFileName[nIndex].data();
 }

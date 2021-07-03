@@ -151,7 +151,6 @@ void mystd::Image2D::SetVertexPosition(VERTEX_2D *pVtx)
 		break;
 	}
 
-
 	// ’¸“_[2]‚ÌÝ’è
 	pVtx[2].pos.x = pVtx[0].pos.x + sinf(fInvRot)*pTransform->Size.Height;
 	pVtx[2].pos.y = pVtx[0].pos.y + cosf(fInvRot)*pTransform->Size.Height;

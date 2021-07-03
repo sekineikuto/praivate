@@ -18,30 +18,25 @@
 #include <vector>
 #include "mystd\mystd.h"
 #include "mystd\types.h"
+#include <fstream>
 
 //-------------------------------------------------------------------------------------------------------------
 // マクロ定義
 //-------------------------------------------------------------------------------------------------------------
 #define TxtCtrlSkipCondition(chr) chr == '\n' || chr == '\r' || chr == '\t' || chr == ' ' || chr == '　'
 
-//-------------------------------------------------------------------------------------------------------------
-// 変数を宣言
-//-------------------------------------------------------------------------------------------------------------
-typedef const char *       CONST_STRING;	// 変更不可文字列
-typedef char *             STRING;			// 文字列
-
-typedef signed char        VSHORT;			// 符号あり1バイト分の変数
-typedef unsigned char      UVSHORT;			// 符号なし1バイト分の変数
-
-typedef long long          VLONG;			// 符号あり8バイト分の変数
-typedef unsigned long long UVLONG;			// 符号なし8バイト分の変数
-
-typedef const char *       FILE_NAME;		// ファイル名
-typedef unsigned int       FILE_SIZE;		// ファイルデータサイズ
-typedef char *             FILE_DATA;		// ファイルデータ
-typedef const char *       OPEN_MODE;		// ファイルを開くモード
-
 _BEGIN_MYSTD
+//-------------------------------------------------------------------------------------------------------------
+// 型宣言
+//-------------------------------------------------------------------------------------------------------------
+typedef charptr_t    string_t;
+typedef const char * const_string_t;
+
+typedef const_string_t file_name_t;
+typedef mystd::u32_t   file_size_t;
+typedef string_t	   file_data_t;
+typedef const_string_t open_mode_t;
+
 //-------------------------------------------------------------------------------------------------------------
 // 列挙型定義
 //-------------------------------------------------------------------------------------------------------------
@@ -70,13 +65,13 @@ enum LOADRESULT
 //-------------------------------------------------------------------------------------------------------------
 
 // ファイルを大きさを取得する
-inline UVLONG GetFileSize(FILE * pFile)
+inline u64_t GetFileSize(FILE * pFile)
 {
 	long lTop = 0;
 	long lSize = 0;
 
 	// 先頭のファイル位置を取得
-	lTop = ftell(pFile);
+	lTop = std::ftell(pFile);
 
 	// (ファイル位置を取得成功 && ファイル位置を尾末に設定に成功)が失敗した時
 	if ((lTop != -1 &&
@@ -95,32 +90,32 @@ inline UVLONG GetFileSize(FILE * pFile)
 		return -1;
 	}
 
-	return (UVLONG)lSize;
+	return (u64_t)lSize;
 }
 
 // ファイル情報を文字列に読み込む
-inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FILE_DATA *outData, OPEN_MODE Mode = "rb")
+inline LOADRESULT LoadFileIntoString(file_name_t pFileName, file_size_t* outSize, file_data_t *outData, open_mode_t Mode = "rb")
 {
 	// ファイルを開く
 	FILE *pFile;
 	if ((pFile = fopen(pFileName, Mode)) == nullptr)return M_OPEN_FAIL;
 
 	// ファイルサイズの取得
-	UVLONG uvlSize = GetFileSize(pFile);
-	if (uvlSize == (UVLONG)-1) {
+	u64_t uvlSize = GetFileSize(pFile);
+	if (uvlSize == (u64_t)-1) {
 		fclose(pFile);
 		return M_SIZE_FAIL;
 	}
 
 	// ファイルデータの生成
-	FILE_DATA pFileData = new char[(size_t)uvlSize];
+	file_data_t pFileData = new char[(size_t)uvlSize];
 	if (pFileData == nullptr) {
 		fclose(pFile);
 		return M_FILEDATA_FAIL;
 	}
 
 	// ファイル情報を読み込む
-	if ((UVLONG)fread(pFileData, 1, (size_t)uvlSize, pFile) != uvlSize) {
+	if ((u64_t)fread(pFileData, 1, (size_t)uvlSize, pFile) != uvlSize) {
 		fclose(pFile);
 		delete[]pFileData;
 		return M_READ_FAIL;
@@ -129,7 +124,7 @@ inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, FILE_SIZE* outSize, FI
 	// ファイルを閉じる
 	fclose(pFile);
 
-	*outSize = (FILE_SIZE)uvlSize;
+	*outSize = (file_size_t)uvlSize;
 	*outData = pFileData;
 
 	return LR_SUCCESS;
@@ -151,11 +146,11 @@ public:
 	~CLoadFile() {}
 
 	// ファイルを分割して取得する
-	inline static LOADRESULT GetSplit(FILE_NAME filename, std::vector<std::string>& fileInfo)
+	inline static LOADRESULT GetSplit(file_name_t filename, std::vector<std::string>& fileInfo)
 	{
 		// 変数宣言
-		FILE_SIZE nFileSize;	// ファイルサイズ
-		FILE_DATA pFileData = nullptr;			// ファイルデータ
+		file_size_t nFileSize;	// ファイルサイズ
+		file_data_t pFileData = nullptr;			// ファイルデータ
 		LOADRESULT result;
 
 		// ファイル情報を文字列に読み込む
@@ -164,18 +159,18 @@ public:
 		if (result != LR_SUCCESS) return result;
 
 		// バッファの領域確保
-		STRING pBuffe = new char[nFileSize + 1];
+		string_t pBuffe = new char[nFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + nFileSize;
+		string_t pBuffeEnd = pBuffe + nFileSize;
 		// 領域をコピーする
 		memcpy(pBuffe, pFileData, nFileSize);
 		pBuffe[nFileSize] = '\0';
 
 		// 読み込んだ情報
-		STRING line = pBuffe;
-		STRING lineEnd = nullptr;
+		string_t line = pBuffe;
+		string_t lineEnd = nullptr;
 
 		// バッファの終了地点までループする
 		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
@@ -211,11 +206,11 @@ public:
 	// １行ずつ取得する 
 	//$ function -> function(line, T value) { }
 	template<class T, class F>
-	inline static LOADRESULT GetLine(FILE_NAME filename, T value, F function)
+	inline static LOADRESULT GetLine(file_name_t filename, T value, F function)
 	{
 		// 変数宣言
-		FILE_SIZE nFileSize;			// ファイルサイズ
-		FILE_DATA pFileData = nullptr;	// ファイルデータ
+		file_size_t nFileSize;			// ファイルサイズ
+		file_data_t pFileData = nullptr;	// ファイルデータ
 		LOADRESULT result;
 
 		// ファイル情報を文字列に読み込む
@@ -224,18 +219,18 @@ public:
 		if (result != LR_SUCCESS) return result;
 
 		// バッファの領域確保
-		STRING pBuffe = new char[nFileSize + 1];
+		string_t pBuffe = new char[nFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + nFileSize;
+		string_t pBuffeEnd = pBuffe + nFileSize;
 		// 領域をコピーする
 		memcpy(pBuffe, pFileData, nFileSize);
 		pBuffe[nFileSize] = '\0';
 
 		// 読み込んだ情報
-		STRING line = pBuffe;
-		STRING lineEnd = nullptr;
+		string_t line = pBuffe;
+		string_t lineEnd = nullptr;
 
 		// バッファの終了地点までループする
 		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
@@ -271,11 +266,11 @@ public:
 	// １行ずつ取得する 
 	//$ Lambda style -> function(line) { }
 	template<class F>
-	inline static LOADRESULT GetLine(FILE_NAME filename,F function)
+	inline static LOADRESULT GetLine(file_name_t filename,F function)
 	{
 		// 変数宣言
-		FILE_SIZE nFileSize;	// ファイルサイズ
-		FILE_DATA pFileData = nullptr;			// ファイルデータ
+		file_size_t nFileSize;	// ファイルサイズ
+		file_data_t pFileData = nullptr;			// ファイルデータ
 		LOADRESULT result;
 
 		// ファイル情報を文字列に読み込む
@@ -284,18 +279,18 @@ public:
 		if (result != LR_SUCCESS) return result;
 
 		// バッファの領域確保
-		STRING pBuffe = new char[nFileSize + 1];
+		string_t pBuffe = new char[nFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + nFileSize;
+		string_t pBuffeEnd = pBuffe + nFileSize;
 		// 領域をコピーする
 		memcpy(pBuffe, pFileData, nFileSize);
 		pBuffe[nFileSize] = '\0';
 
 		// 読み込んだ情報
-		STRING line = pBuffe;
-		STRING lineEnd = nullptr;
+		string_t line = pBuffe;
+		string_t lineEnd = nullptr;
 
 		// バッファの終了地点までループする
 		for (line = pBuffe; line < pBuffeEnd; line = lineEnd + 1)
@@ -329,7 +324,9 @@ public:
 	}
 };
 
+//-------------------------------------------------------------------------------------------------------------
 // 初期化ファイルの読み込み
+//-------------------------------------------------------------------------------------------------------------
 class CLoadInitFile
 {
 public:
@@ -338,14 +335,14 @@ public:
 	{
 	public:
 		READINFO() {}
-		READINFO(STRING in)
+		READINFO(string_t in)
 		{
 			entrytype = entrydata = nullptr;
 			line = in;
 		}
-		STRING entrytype;
-		STRING entrydata;
-		STRING line;
+		string_t entrytype;
+		string_t entrydata;
+		string_t line;
 	} READINFO;
 
 	// コンストラクタ
@@ -355,7 +352,7 @@ public:
 
 	// ファイルのロード
 	template<class T, class F>
-	inline static LOADRESULT LoadFile(FILE_NAME filename,T value, F func)
+	inline static LOADRESULT LoadFile(file_name_t filename,T value, F func)
 	{
 		LOADRESULT result;
 		CLoadInitFile Load;
@@ -375,7 +372,7 @@ public:
 	}
 
 	template<class F>
-	inline static LOADRESULT LoadFile(FILE_NAME filename, F func)
+	inline static LOADRESULT LoadFile(file_name_t filename, F func)
 	{
 		LOADRESULT result;
 		CLoadInitFile Load;
@@ -417,28 +414,28 @@ public:
 	}
 
 	// ファイル情報を文字列に読み込む
-	inline LOADRESULT LoadFileIntoString(FILE_NAME pFileName, OPEN_MODE Mode = "rb")
+	inline LOADRESULT LoadFileIntoString(file_name_t pFileName, open_mode_t Mode = "rb")
 	{
 		// ファイルを開く
 		FILE *pFile;
 		if ((pFile = fopen(pFileName, Mode)) == nullptr)return M_OPEN_FAIL;
 
 		// ファイルサイズの取得
-		UVLONG uvlSize = GetFileSize(pFile);
-		if (uvlSize == (UVLONG)-1) {
+		u64_t uvlSize = GetFileSize(pFile);
+		if (uvlSize == (u64_t)-1) {
 			fclose(pFile);
 			return M_SIZE_FAIL;
 		}
 
 		// ファイルデータの生成
-		FILE_DATA pFileData = new char[(size_t)uvlSize];
+		file_data_t pFileData = new char[(size_t)uvlSize];
 		if (pFileData == nullptr) {
 			fclose(pFile);
 			return M_FILEDATA_FAIL;
 		}
 
 		// ファイル情報を読み込む
-		if ((UVLONG)fread(pFileData, 1, (size_t)uvlSize, pFile) != uvlSize) {
+		if ((u64_t)fread(pFileData, 1, (size_t)uvlSize, pFile) != uvlSize) {
 			fclose(pFile);
 			delete[]pFileData;
 			return M_READ_FAIL;
@@ -447,7 +444,7 @@ public:
 		// ファイルを閉じる
 		fclose(pFile);
 
-		this->m_nuFileSize = (FILE_SIZE)uvlSize;
+		this->m_nuFileSize = (file_size_t)uvlSize;
 		this->m_pFileData = pFileData;
 
 		return LR_SUCCESS;
@@ -458,18 +455,18 @@ public:
 	inline LOADRESULT SetingfromString(T value, F funk)
 	{
 		// バッファの領域確保
-		STRING pBuffe = new char[this->m_nuFileSize + 1];
+		string_t pBuffe = new char[this->m_nuFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + this->m_nuFileSize;
+		string_t pBuffeEnd = pBuffe + this->m_nuFileSize;
 		// 領域をコピーする
 		memcpy(pBuffe, this->m_pFileData, this->m_nuFileSize);
 		pBuffe[this->m_nuFileSize] = '\0';
 
 		// 読み込んだ情報
 		READINFO info = READINFO(pBuffe);
-		STRING lineEnd = nullptr;
+		string_t lineEnd = nullptr;
 
 		// バッファの終了地点までループする
 		for (info.line = pBuffe; info.line < pBuffeEnd; info.line = lineEnd + 1)
@@ -487,14 +484,14 @@ public:
 			{
 				lineEnd[-1] = '\0';
 
-				CONST_STRING pDataEnd;		// 登録用のデータの最後
-				CONST_STRING pTypeStart;	// 登録用のタイプの最初
-				STRING       pTypeEnd;		// 登録用のタイプの最後
-				CONST_STRING pDataStart;	// 登録用のデータの最初
+				const_string_t pDataEnd;		// 登録用のデータの最後
+				const_string_t pTypeStart;	// 登録用のタイプの最初
+				string_t       pTypeEnd;		// 登録用のタイプの最後
+				const_string_t pDataStart;	// 登録用のデータの最初
 
 				pDataEnd = lineEnd - 1;															// 行の最後を設定
 				pTypeStart = info.line + 1;															// 最初の [ をスキップ
-				pTypeEnd = (STRING)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
+				pTypeEnd = (string_t)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
 				pDataStart = pTypeEnd ? GetRangeStrfromChar(pTypeEnd + 1, pDataEnd, '[') : nullptr;	// 2つ目の [ までスキップ
 
 				if (pTypeEnd == '\0' || pDataStart == '\0')continue;
@@ -502,8 +499,8 @@ public:
 				*pTypeEnd = '\0';	// 一つ目の ] を初期化
 				++pDataStart;		// 二つ目の [ を飛ばす
 
-				info.entrytype = (STRING)(void*)pTypeStart;
-				info.entrydata = (STRING)(void*)pDataStart;
+				info.entrytype = (string_t)(void*)pTypeStart;
+				info.entrydata = (string_t)(void*)pDataStart;
 			}
 
 
@@ -524,18 +521,18 @@ public:
 	inline LOADRESULT SetingfromString(F funk)
 	{
 		// バッファの領域確保
-		STRING pBuffe = new char[this->m_nuFileSize + 1];
+		string_t pBuffe = new char[this->m_nuFileSize + 1];
 		if (pBuffe == nullptr)return B_FAIL;
 
 		// バッファ領域の最終地点
-		STRING pBuffeEnd = pBuffe + this->m_nuFileSize;
+		string_t pBuffeEnd = pBuffe + this->m_nuFileSize;
 		// 領域をコピーする
 		memcpy(pBuffe, this->m_pFileData, this->m_nuFileSize);
 		pBuffe[this->m_nuFileSize] = '\0';
 
 		// 読み込んだ情報
 		READINFO info = READINFO(pBuffe);
-		STRING lineEnd = nullptr;
+		string_t lineEnd = nullptr;
 
 		// バッファの終了地点までループする
 		for (info.line = pBuffe; info.line < pBuffeEnd; info.line = lineEnd + 1)
@@ -553,14 +550,14 @@ public:
 			{
 				lineEnd[-1] = '\0';
 
-				CONST_STRING pDataEnd;		// 登録用のデータの最後
-				CONST_STRING pTypeStart;	// 登録用のタイプの最初
-				STRING       pTypeEnd;		// 登録用のタイプの最後
-				CONST_STRING pDataStart;	// 登録用のデータの最初
+				const_string_t pDataEnd;		// 登録用のデータの最後
+				const_string_t pTypeStart;	// 登録用のタイプの最初
+				string_t       pTypeEnd;		// 登録用のタイプの最後
+				const_string_t pDataStart;	// 登録用のデータの最初
 
 				pDataEnd = lineEnd - 1;															// 行の最後を設定
 				pTypeStart = info.line + 1;															// 最初の [ をスキップ
-				pTypeEnd = (STRING)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
+				pTypeEnd = (string_t)(void*)GetRangeStrfromChar(pTypeStart, pDataEnd, ']');			// 最初の ] までスキップ
 				pDataStart = pTypeEnd ? GetRangeStrfromChar(pTypeEnd + 1, pDataEnd, '[') : nullptr;	// 2つ目の [ までスキップ
 
 				if (pTypeEnd == '\0' || pDataStart == '\0')continue;
@@ -568,8 +565,8 @@ public:
 				*pTypeEnd = '\0';	// 一つ目の ] を初期化
 				++pDataStart;		// 二つ目の [ を飛ばす
 
-				info.entrytype = (STRING)(void*)pTypeStart;
-				info.entrydata = (STRING)(void*)pDataStart;
+				info.entrytype = (string_t)(void*)pTypeStart;
+				info.entrydata = (string_t)(void*)pDataStart;
 			}
 
 
@@ -587,13 +584,13 @@ public:
 
 private:
 	// 任意の文字以降の文字列を取得
-	inline static CONST_STRING GetRangeStrfromChar(CONST_STRING cnStr, CONST_STRING cnStrEnd, char marker)
+	inline static const_string_t GetRangeStrfromChar(const_string_t cnStr, const_string_t cnStrEnd, char marker)
 	{
-		CONST_STRING cnRetStr = (CONST_STRING)memchr(cnStr, (int)marker, cnStrEnd - cnStr);
+		const_string_t cnRetStr = (const_string_t)memchr(cnStr, (int)marker, cnStrEnd - cnStr);
 		return cnRetStr;
 	}
-	FILE_SIZE m_nuFileSize;	// ファイルサイズ
-	FILE_DATA m_pFileData;	// ファイルデータ
+	file_size_t m_nuFileSize;	// ファイルサイズ
+	file_data_t m_pFileData;	// ファイルデータ
 };
 
 _END_MYSTD

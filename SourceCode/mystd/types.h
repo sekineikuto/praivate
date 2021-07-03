@@ -26,17 +26,20 @@ _BEGIN_MYSTD
 //-------------------------------------------------------------------------------------------------------------
 // 列挙型定義
 //-------------------------------------------------------------------------------------------------------------
-// 頂点点の原点(対キーパッド)
+// 頂点の原点(キーパッドに対応)
+// 7   8   9
+// 4   5   6
+// 1   2   3
 typedef enum
 {
 	PIVOTTYPE_NONE = 0,			// なし
-	PIVOTTYPE_LOWERLEFT,			// 左下
+	PIVOTTYPE_LOWERLEFT,		// 左下
 	PIVOTTYPE_LOWERCENTER,		// 中央下
 	PIVOTTYPE_LOWERRIGHT,		// 右下
 	PIVOTTYPE_CENTERLEFT,		// 左中央
 	PIVOTTYPE_CENTER,			// 中央
 	PIVOTTYPE_CENTERRIGHT,		// 右中央
-	PIVOTTYPE_UPPERLEFT,			// 左上
+	PIVOTTYPE_UPPERLEFT,		// 左上
 	PIVOTTYPE_UPPERCENTER,		// 中央上
 	PIVOTTYPE_UPPERRIGHT,		// 右上
 	PIVOTTYPE_MAX				// 最大数
@@ -45,8 +48,6 @@ typedef enum
 //-------------------------------------------------------------------------------------------------------------
 // 変数定義
 //-------------------------------------------------------------------------------------------------------------
-typedef const char * CSTRING;
-typedef char *       STRING;
 
 //-------------------------------------------------------------------------------------------------------------
 // 構造体定義
@@ -99,7 +100,7 @@ typedef struct _RECTSIZE
 	inline _RECTSIZE operator * (FLOAT src) const { return _RECTSIZE(this->Width * src, this->Height * src); }
 	inline _RECTSIZE operator / (FLOAT src) const { return _RECTSIZE(this->Width / src, this->Height / src); }
 
-	//inline friend _RECTSIZE operator * (FLOAT srcA, CONST _RECTSIZE& srcB) { return _RECTSIZE(srcB.Width * srcA, srcB.Height * srcA); }
+	inline friend _RECTSIZE operator * (FLOAT srcA, CONST _RECTSIZE& srcB) { return _RECTSIZE(srcB.Width * srcA, srcB.Height * srcA); }
 
 	inline BOOL operator == (CONST _RECTSIZE& src) const { return this->Width == src.Width && this->Height == src.Height; }
 	inline BOOL operator != (CONST _RECTSIZE& src) const { return this->Width != src.Width || this->Height != src.Height; }

@@ -23,18 +23,29 @@
 //-------------------------------------------------------------------------------------------------------------
 _BEGIN_MYSTD
 
+/*
+$ constants
+*/
+
 // *Can be halved by multiplication
-static constexpr float fHalfSize = 0.5f;
+static constexpr f32_t fHalfSize = 0.5f;
 
 // Pi
-static constexpr float fPi = 3.141592654f;
+static constexpr f32_t fPi = 3.141592654f;
 
 // *Half of Pi
-static constexpr float fHalf_PI = fPi * fHalfSize;
+static constexpr f32_t fHalf_PI = fPi * fHalfSize;
+
+// Number of polygon vertices
+static constexpr u32_t nNumPolygon = 4;
+
+/* 
+$ functions
+*/
 
 // *Prints half the value of the argument set in rsc
-template<class T>
-inline void Convert_to_half_size(T& out,T& rsc)
+template<class outT, class rscT>
+inline void Convert_to_half_size(outT& out, rscT& rsc)
 {
 	out = rsc * fHalfSize;
 }
