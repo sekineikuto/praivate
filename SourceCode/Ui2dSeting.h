@@ -28,6 +28,11 @@
 namespace ui2d
 {
 	//-------------------------------------------------------------------------------------------------------------
+	// エイリアス宣言
+	//-------------------------------------------------------------------------------------------------------------
+	using Map_for_load = std::unordered_map<std::string, int>;
+
+	//-------------------------------------------------------------------------------------------------------------
 	// 列挙型定義
 	//-------------------------------------------------------------------------------------------------------------
 	// マスクの設定値
@@ -106,20 +111,13 @@ namespace ui2d
 		// 設定情報をロードする
 		inline static void LoadSetingInfo(const char *pFileName, std::vector<SETING> *output)
 		{
-			// 情報を初期化
-			CLoadinfo info;
-			info.bSeting = false;
-			info.output = output;
-
-			// 1行ずつ指定された関数に送る
-			mystd::CLoadFile::GetLine(pFileName, &info, ReadFromLine);
 		}
 
 		// マップの設定
-		static void SetMap();
+		static void SetMap(void);
 
 		// マップの削除
-		static void UnsetMap();
+		static void UnsetMap(void);
 
 	private:
 		/* メンバ関数 */
@@ -127,26 +125,6 @@ namespace ui2d
 		// 一行から情報を読み取る
 		inline static void ReadFromLine(const char * info, CLoadinfo* load)
 		{
-			if (strcmp(info, "SET_UI") == 0)
-			{
-				load->item.push_back(info);
-			}
-			else if (load->item.empty())
-			{
-				if (strcmp(info, "{") == 0)
-				{
-					load->bSeting = true;
-				}
-				else if (strcmp(info, "}") == 0)
-				{
-					load->item.pop_back();
-					load->bSeting = false;
-				}
-			}
-			else
-			{// パラメータを設定
-				ReadFromLineSetParam(info, load);
-			}
 		}
 
 		// 読み取った行からパラメータを設定する
@@ -195,10 +173,7 @@ namespace ui2d
 		}
 
 		/* メンバ変数 */
-		static std::unordered_map<std::string, int> *m_pMap; // ロード用のマップ
-		bool bSeting;
-		std::vector<std::string> item;
-		std::vector<SETING> *output;
+		static Map_for_load *m_pMap; // ロード用のマップ
 	};
 
 
