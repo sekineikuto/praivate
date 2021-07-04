@@ -17,7 +17,7 @@
 #include "gamepad.h"
 #include "camera.h"
 #include "Light.h"
-#include "Mylibrary.h"
+#include "..\Mylibrary.h"
 #include <unordered_map>
 
 //-------------------------------------------------------------------------------------------------------------

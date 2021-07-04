@@ -8,7 +8,7 @@
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
 #include "Mylibrary.h"
-#include "DebugProc.h"
+#include "MyEngine\DebugProc.h"
 
 /*
 // class CMylibrary func

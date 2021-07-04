@@ -9,13 +9,13 @@
 //-------------------------------------------------------------------------------------------------------------
 #include "manager.h"
 #include "Scene.h"
-#include "myhash.h"
+#include "..\myhash.h"
 #include "renderer.h"
-#include "Model.h"
+#include "..\Model.h"
 #include "mode.h"
-#include "title.h"
-#include "TextureManager.h"
-#include "TextfileController.h"
+#include "..\title.h"
+#include "..\TextureManager.h"
+#include "..\TextfileController.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // Ã“Iƒƒ“ƒo•Ï”‚Ì‰Šú‰»

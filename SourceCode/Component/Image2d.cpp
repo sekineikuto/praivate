@@ -7,8 +7,8 @@
 //-------------------------------------------------------------------------------------------------------------
 // インクルードファイル
 //-------------------------------------------------------------------------------------------------------------
-#include "../manager.h"
-#include "../renderer.h"
+#include "../MyEngine/manager.h"
+#include "../MyEngine/renderer.h"
 #include "Image2d.h"
 #include "CompoBehaviour.h"
 #include "transform.h"

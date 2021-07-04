@@ -120,7 +120,7 @@ void CCamera::Update(void)
 	m_PosVDest.x = m_HeadPos.x - cosf(m_rot.x)*sinf(m_rot.y)*m_fLength*m_fMagnificat;
 	m_PosVDest.y = m_HeadPos.y + sinf(m_rot.x)*m_fLength*m_fMagnificat;
 	m_PosVDest.z = m_HeadPos.z - cosf(m_rot.x)*cosf(m_rot.y)*m_fLength*m_fMagnificat;
-	// 視点の更新
+	// 追従処理
 	m_posV += (m_PosVDest - m_posV)*CAMERA_FOLLOW_COEFFICIENT;
 
 	/*---------------------------------------------
@@ -130,10 +130,10 @@ void CCamera::Update(void)
 	m_PosRDest.x = m_HeadPos.x;
 	m_PosRDest.y = m_HeadPos.y;
 	m_PosRDest.z = m_HeadPos.z;
-	// 注視点の更新
+	// 追従処理
 	m_posR += (m_PosRDest - m_posR)*CAMERA_FOLLOW_COEFFICIENT;
 
-	// 向いている方向を算出
+	// 方向を算出
 	m_DirecVector = m_posR - m_posV;
 	// 単位ベクトルの生成
 	CMylibrary::CreateUnitVector(&m_DirecVector, &m_DirecVector);

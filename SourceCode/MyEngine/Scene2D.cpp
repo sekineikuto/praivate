@@ -11,7 +11,7 @@
 #include "manager.h"
 #include "keyboard.h"
 #include "DebugProc.h"
-#include "mystd\utility.h"
+#include "..\mystd\utility.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // コンストラクタ

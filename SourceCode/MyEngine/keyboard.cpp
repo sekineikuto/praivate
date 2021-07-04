@@ -68,17 +68,22 @@ void Ckeyboard::Uninit(void)
 //-------------------------------------------------------------------------------------------------------------
 void Ckeyboard::Update(void)
 {
+	// 変数宣言
 	BYTE aKeyState[NUM_KEY_MAX];		// キーボードの入力情報
 	int nCntKey;
+
 	// デバイスからデータを取得
 	if (SUCCEEDED(m_pDevice->GetDeviceState(sizeof(aKeyState), aKeyState)))
 	{
 		for (nCntKey = 0; nCntKey < NUM_KEY_MAX; nCntKey++)
 		{
+			// トリガー情報
 			m_aKeyStateTrigger[nCntKey] = aKeyState[nCntKey] ^ m_aKeyState[nCntKey] & aKeyState[nCntKey];
-			m_aKeyStateRelease[nCntKey] = (aKeyState[nCntKey] ^ m_aKeyState[nCntKey]) & m_aKeyState[nCntKey];
+			// リリース情報
+			m_aKeyStateRelease[nCntKey] = (aKeyState[nCntKey] ^ m_aKeyState[nCntKey]) & !m_aKeyState[nCntKey];
 
-			m_aKeyState[nCntKey] = aKeyState[nCntKey];	// キープレス情報保存
+			// キープレス情報保存
+			m_aKeyState[nCntKey] = aKeyState[nCntKey];
 		}
 	}
 	else
@@ -96,6 +101,7 @@ Ckeyboard * Ckeyboard::Create(HINSTANCE hInstance, HWND hWnd)
 	Ckeyboard * pKeyboard = new Ckeyboard;
 	// 初期化
 	pKeyboard->Init(hInstance, hWnd);
+
 	return pKeyboard;
 }
 
