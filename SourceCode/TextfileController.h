@@ -29,8 +29,8 @@ _BEGIN_MYSTD
 //-------------------------------------------------------------------------------------------------------------
 // å^êÈåæ
 //-------------------------------------------------------------------------------------------------------------
-typedef charptr_t    string_t;
-typedef const char * const_string_t;
+typedef char *         string_t;
+typedef const char *   const_string_t;
 
 typedef const_string_t file_name_t;
 typedef mystd::u32_t   file_size_t;

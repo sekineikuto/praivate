@@ -152,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="SourceCode\mystd\Image2d.cpp" />
+    <ClCompile Include="SourceCode\Component\Image2d.cpp" />
     <ClCompile Include="SourceCode\Ui2d.cpp" />
     <ClCompile Include="SourceCode\camera.cpp" />
     <ClCompile Include="SourceCode\DebugProc.cpp" />
@@ -183,12 +183,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceCode\GameObject.h" />
-    <ClInclude Include="SourceCode\mystd\CompoBehaviour.h" />
-    <ClInclude Include="SourceCode\mystd\Component.h" />
+    <ClInclude Include="SourceCode\Component\CompoBehaviour.h" />
+    <ClInclude Include="SourceCode\Component\Component.h" />
     <ClInclude Include="SourceCode\mystd\easings.h" />
     <ClInclude Include="SourceCode\mystd\hash_map.h" />
-    <ClInclude Include="SourceCode\mystd\transform.h" />
-    <ClInclude Include="SourceCode\mystd\Image2d.h" />
+    <ClInclude Include="SourceCode\Component\transform.h" />
+    <ClInclude Include="SourceCode\Component\Image2d.h" />
     <ClInclude Include="SourceCode\mystd\Include.h" />
     <ClInclude Include="SourceCode\mystd\mystd.h" />
     <ClInclude Include="SourceCode\mystd\types.h" />

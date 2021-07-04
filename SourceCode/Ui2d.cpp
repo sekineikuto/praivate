@@ -10,7 +10,7 @@
 #include "Ui2d.h"
 #include "keyboard.h"
 #include "TextureManager.h"
-#include "mystd\transform.h"
+#include "Component\transform.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // ê∂ê¨
