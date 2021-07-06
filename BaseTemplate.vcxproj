@@ -182,9 +182,9 @@
     <ClCompile Include="SourceCode\Ui2dSeting.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SourceCode\MyEngine\CompoBehaviour.h" />
+    <ClInclude Include="SourceCode\MyEngine\Component.h" />
     <ClInclude Include="SourceCode\MyEngine\GameObject.h" />
-    <ClInclude Include="SourceCode\Component\CompoBehaviour.h" />
-    <ClInclude Include="SourceCode\Component\Component.h" />
     <ClInclude Include="SourceCode\mystd\easings.h" />
     <ClInclude Include="SourceCode\mystd\hash_map.h" />
     <ClInclude Include="SourceCode\Component\transform.h" />

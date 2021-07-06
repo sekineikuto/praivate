@@ -10,7 +10,7 @@
 #include "../MyEngine/manager.h"
 #include "../MyEngine/renderer.h"
 #include "Image2d.h"
-#include "CompoBehaviour.h"
+#include "..\MyEngine\CompoBehaviour.h"
 #include "transform.h"
 #include "../mystd/utility.h"
 
@@ -49,6 +49,20 @@ void mystd::Image2D::Update(void)
 //-------------------------------------------------------------------------------------------------------------
 void mystd::Image2D::Draw(void)
 {
+	// デバイスの取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();
+
+	// 頂点バッファをストリームにバインド
+	pDevice->SetStreamSource(0, pVtxBuff, 0, sizeof(CRenderer::VERTEX_2D));
+
+	// 頂点フォーマット設定
+	pDevice->SetTexture(0, pTexture);
+
+	// テクスチャの設定
+	pDevice->SetFVF(FVF_VERTEX_2D);
+
+	// ポリゴン描画
+	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 }
 
 //-------------------------------------------------------------------------------------------------------------
@@ -60,9 +74,9 @@ HRESULT mystd::Image2D::MakeVertex(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer().GetDevice();
 
 	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_2D) * 4,
+	pDevice->CreateVertexBuffer(sizeof(CRenderer::VERTEX_2D) * nNumPolygon,
 		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,									// 頂点フォーマット
+		FVF_VERTEX_2D,
 		D3DPOOL_MANAGED,
 		&pVtxBuff,
 		NULL);
@@ -91,8 +105,11 @@ HRESULT mystd::Image2D::MakeVertex(void)
 	// 頂点カラーの設定
 	SetVertexColor(pVtx);
 
-	// テクスチャ座標
-	SetTexturePosition(pVtx);
+	// テクスチャ位置の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
+	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 
 	// 頂点データをアンロック
 	pVtxBuff->Unlock();
@@ -106,10 +123,10 @@ HRESULT mystd::Image2D::MakeVertex(void)
 void mystd::Image2D::SetVertexPosition(VERTEX_2D *pVtx)
 {
 	// 変数宣言
-	D3DXVECTOR2 halfsize = D3DXVECTOR2(pTransform->Size.Width * mystd::fHalfSize, pTransform->Size.Height * mystd::fHalfSize);	// 半分の大きさ
-	float		fInvRot = -pTransform->Rotation;																	// 逆の回転
-	float		fSin_size_x = sinf(mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;					// sin方向のxX軸の大きさの計算結果
-	float		fCos_size_x = cosf(mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;					// cos方向のxX軸の大きさの計算結果
+	D3DXVECTOR2 halfsize    = D3DXVECTOR2(pTransform->Size.Width * mystd::fHalfSize, pTransform->Size.Height * mystd::fHalfSize);	// 半分の大きさ
+	float       fInvRot     = -pTransform->Rotation;																				// 逆の回転
+	float       fSin_size_x = sinf(mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;									// sin方向のxX軸の大きさの計算結果
+	float       fCos_size_x = cosf(mystd::fHalf_PI - pTransform->Rotation)*pTransform->Size.Width;									// cos方向のxX軸の大きさの計算結果
 
 	// 原点タイプに応じて頂点[0]の位置を設定する
 	switch (pTransform->Pivot)
@@ -171,15 +188,4 @@ void mystd::Image2D::SetVertexPosition(VERTEX_2D *pVtx)
 void mystd::Image2D::SetVertexColor(VERTEX_2D *pVtx)
 {
 	pVtx[0].col = pVtx[1].col = pVtx[2].col = pVtx[3].col = color;
-}
-
-//-------------------------------------------------------------------------------------------------------------
-// テクスチャ位置の設定
-//-------------------------------------------------------------------------------------------------------------
-void mystd::Image2D::SetTexturePosition(VERTEX_2D *pVtx)
-{
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
 }
