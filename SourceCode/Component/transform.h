@@ -40,6 +40,8 @@ public:
 	void Update(void) {}
 	void Draw(void) {}
 
+	void AttachComponent(IComponent * pComp) {}
+
 	/* メンバ変数 */
 	D3DXVECTOR3 Position;	// 位置
 	RECTSIZE    Size;		// サイズ

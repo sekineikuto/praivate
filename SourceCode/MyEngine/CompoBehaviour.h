@@ -44,7 +44,7 @@ public:
 	{
 		for (auto compo : CompoList)
 		{
-			if (dynamic_cast<T*>(compo) != nullptr)
+			if (typeid(*compo) == typeid(T))
 			{
 				return nullptr;
 			}
@@ -55,6 +55,12 @@ public:
 		if (pComponent != nullptr)
 		{
 			pComponent->parent = this;
+
+			for (auto compo : CompoList)
+			{
+				compo->AttachComponent(pNew);
+			}
+
 			CompoList.push_back(pComponent);
 			return pNew;
 		}

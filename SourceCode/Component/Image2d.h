@@ -38,6 +38,9 @@ public:
 	// 描画
 	void Draw(void);
 
+	// コンポーネントを取り付ける
+	void AttachComponent(IComponent * pComp);
+
 private:
 	// 頂点情報の作成
 	HRESULT MakeVertex(void);
