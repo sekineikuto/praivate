@@ -34,6 +34,11 @@ void CTitleUI::Init(void)
 {
 	// ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚İ
 	mystd::CLoadFile::GetLine(CManager::GetFIleName(CManager::FILE_TITLEUI), &m_2dui, ReadFromLine);
+
+	ui2d::SETING seting;
+	m_2dui.reserve(2);
+	m_2dui.push_back(CUi2d::Create(seting));
+
 }
 
 //-------------------------------------------------------------------------------------------------------------

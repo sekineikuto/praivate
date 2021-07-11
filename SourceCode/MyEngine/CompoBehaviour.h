@@ -14,6 +14,7 @@
 #include "../mystd/mystd.h"
 #include "Component.h"
 #include <vector>
+#include <unordered_map>
 
 _BEGIN_MYSTD
 //-------------------------------------------------------------------------------------------------------------
@@ -22,6 +23,8 @@ _BEGIN_MYSTD
 class CCompoBehaviour
 {
 public:
+	using hash_map = std::unordered_map<std::string, u32_t>;
+
 	// コンストラクタ
 	CCompoBehaviour()
 	{
@@ -42,25 +45,42 @@ public:
 	template<typename T>
 	T* AddComponent()
 	{
-		for (auto compo : CompoList)
-		{
-			if (typeid(*compo) == typeid(T))
-			{
-				return nullptr;
-			}
-		}
+		//for (auto compo : CompoList)
+		//{
+		//	if (typeid(*compo) == typeid(T))
+		//	{
+		//		return nullptr;
+		//	}
+		//}
+
+		map.insert(hash_map::value_type(typeid(T).name(), CompoList.size()));
+
+		for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
+			std::cout << " [" << it->first.data() << ", " << it->second << "]";
+		std::cout << "\n";
+
+		//u32_t nCnt = 10;
+		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
+		//{
+		//	map[it->first.data()] = nCnt;
+		//	nCnt++;
+		//}
+
+		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
+		//	std::cout << " [" << it->first.data() << ", " << it->second << "]";
+		//std::cout << "\n";
+
 
 		T* pNew = new T();
 		IComponent* pComponent = static_cast<IComponent*>(pNew);
 		if (pComponent != nullptr)
 		{
 			pComponent->parent = this;
-
-			for (auto compo : CompoList)
-			{
-				compo->AttachComponent(pNew);
-			}
-
+			pComponent->Start();
+			//for (auto compo : CompoList)
+			//{
+			//	compo->AttachComponent(pNew);
+			//}
 			CompoList.push_back(pComponent);
 			return pNew;
 		}
@@ -94,6 +114,19 @@ public:
 	template<typename T>
 	void Destroy(T* src)
 	{
+		//int nMapIdx = map.at(typeid(T).name());
+
+		//// マップから消す
+		//map.erase(nMapIdx);
+
+		//int nCnt = 0;
+		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
+		//{
+		//	it->second = nCnt;
+		//	++nCnt;
+		//}
+
+
 		IComponent* pComponent = static_cast<IComponent*>(src);
 		
 		if (pComponent == nullptr)
@@ -109,6 +142,7 @@ public:
 
 private:
 	std::vector<IComponent*> CompoList;	// コンポーネントリスト
+	hash_map map;
 }; 
 
 

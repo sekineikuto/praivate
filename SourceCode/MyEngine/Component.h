@@ -41,6 +41,7 @@ public:
 
 	CCompoBehaviour *parent;	// 親情報
 	bool             enabled;	// アクティブを設定
+	std::string      type;		// コンポーネントの型
 private:
 protected:
 

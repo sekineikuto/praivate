@@ -11,6 +11,7 @@
 #include "MyEngine\keyboard.h"
 #include "TextureManager.h"
 #include "Component\transform.h"
+#include "Component\Image2d.h"
 
 //-------------------------------------------------------------------------------------------------------------
 // ê∂ê¨
@@ -27,9 +28,12 @@ CUi2d * CUi2d::Create(ui2d::SETING &seting, PRIORITY pri)
 //-------------------------------------------------------------------------------------------------------------
 void CUi2d::Init(ui2d::SETING & seting, PRIORITY pri)
 {
-	AddComponent<_MYSTD Transform2D>();
+	this->AddComponent<_MYSTD Transform2D>();
+	this->AddComponent<_MYSTD Image2D>();
 	auto test = GetComponent<_MYSTD Transform2D>();
-	Destroy(test);
+	auto test2 = GetComponent<_MYSTD Image2D>();
+
+	//Destroy(test);
 }
 
 //-------------------------------------------------------------------------------------------------------------
