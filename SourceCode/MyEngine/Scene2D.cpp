@@ -385,11 +385,11 @@ void CScene2D::SetVatexPosition(CRenderer::VERTEX_2D * pVtx)
 {
 	// 変数宣言
 	D3DXVECTOR2 halfsize;														// 半分の大きさ
-	float		fInvRot = -m_fRotation;										// 逆の回転
+	float		fInvRot = -m_fRotation;											// 逆の回転
 	float		fSin_size_x = sinf(mystd::fHalf_PI - m_fRotation)*m_size.x;		// sin方向のxX軸の大きさの計算結果
 	float		fCos_size_x = cosf(mystd::fHalf_PI - m_fRotation)*m_size.x;		// cos方向のxX軸の大きさの計算結果
 
-	// halfsizeに半分の大きさを格納
+	// 半分の大きさを格納
 	mystd::Convert_to_half_size(halfsize, m_size);
 
 	// 原点タイプに応じて頂点[0]の位置を設定する
@@ -432,7 +432,6 @@ void CScene2D::SetVatexPosition(CRenderer::VERTEX_2D * pVtx)
 		pVtx[0].pos.y = m_pos.y + cosf(-mystd::fHalf_PI - m_fRotation)*m_size.x;
 		break;
 	}
-
 
 	// 頂点[2]の設定
 	pVtx[2].pos.x = pVtx[0].pos.x + sinf(fInvRot)*m_size.y;

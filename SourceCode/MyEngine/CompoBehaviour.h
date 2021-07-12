@@ -23,7 +23,7 @@ _BEGIN_MYSTD
 class CCompoBehaviour
 {
 public:
-	using hash_map = std::unordered_map<std::string, u32_t>;
+	using hash_map = std::unordered_map<std::string, IComponent*>;
 
 	// コンストラクタ
 	CCompoBehaviour()
@@ -34,10 +34,10 @@ public:
 	// デストラクタ
 	~CCompoBehaviour()
 	{
-		for (auto compo : CompoList)
+		for (auto itr : compoList)
 		{
-			delete compo;
-			compo = nullptr;
+			delete itr.second;
+			itr.second = nullptr;
 		}
 	}
 
@@ -45,104 +45,69 @@ public:
 	template<typename T>
 	T* AddComponent()
 	{
-		//for (auto compo : CompoList)
-		//{
-		//	if (typeid(*compo) == typeid(T))
-		//	{
-		//		return nullptr;
-		//	}
-		//}
+		auto addTypeName = typeid(T).name();
 
-		map.insert(hash_map::value_type(typeid(T).name(), CompoList.size()));
-
-		for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
-			std::cout << " [" << it->first.data() << ", " << it->second << "]";
-		std::cout << "\n";
-
-		//u32_t nCnt = 10;
-		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
-		//{
-		//	map[it->first.data()] = nCnt;
-		//	nCnt++;
-		//}
-
-		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
-		//	std::cout << " [" << it->first.data() << ", " << it->second << "]";
-		//std::cout << "\n";
-
+		for (auto itr : compoList)
+			if (itr.first == addTypeName)
+				return nullptr;
 
 		T* pNew = new T();
-		IComponent* pComponent = static_cast<IComponent*>(pNew);
-		if (pComponent != nullptr)
-		{
-			pComponent->parent = this;
-			pComponent->Start();
-			//for (auto compo : CompoList)
-			//{
-			//	compo->AttachComponent(pNew);
-			//}
-			CompoList.push_back(pComponent);
-			return pNew;
-		}
 
-		return nullptr;
+		auto pComponent = static_cast<IComponent*>(pNew);
+
+		if (pComponent == nullptr)
+			return nullptr;
+
+		pComponent->parent = this;
+
+		pComponent->Start();
+
+		compoList.insert(hash_map::value_type(addTypeName, pComponent));
+
+		return pNew;
 	}
 
 	// コンポーネントの取得
 	template<typename T>
 	T* GetComponent()
 	{
-		for (auto compo : CompoList)
-		{
-			T* component = dynamic_cast<T*>(compo);
-			if (component != nullptr)
-			{
-				return component;
-			}
-		}
-		return nullptr;
+		auto base = compoList[typeid(T).name()];
+
+		if (base == nullptr)
+			return nullptr;
+
+		T* pComp = dynamic_cast<T*>(base);
+
+		return pComp;
 	}
 
 	// コンポーネントを削除
 	template<typename T>
 	void RemoveComponent()
 	{
+		auto key = typeid(T).name();
 
+		auto base = compoList[key];
+
+		if (base == nullptr)
+			return;
+
+		delete base;
+
+		compoList.erase(key);
+
+		base = nullptr;
 	}
 
 	// コンポーネントを削除
 	template<typename T>
 	void Destroy(T* src)
 	{
-		//int nMapIdx = map.at(typeid(T).name());
-
-		//// マップから消す
-		//map.erase(nMapIdx);
-
-		//int nCnt = 0;
-		//for (hash_map::const_iterator it = map.begin(); it != map.end(); ++it)
-		//{
-		//	it->second = nCnt;
-		//	++nCnt;
-		//}
-
-
-		IComponent* pComponent = static_cast<IComponent*>(src);
-		
-		if (pComponent == nullptr)
-			return;
-
-		delete src;
-
-		int nIdx = CompoList.front() - pComponent;
-		CompoList.erase(CompoList.begin() + nIdx);
-		
-		src = nullptr;
 	}
 
 private:
-	std::vector<IComponent*> CompoList;	// コンポーネントリスト
-	hash_map map;
+	//std::vector<IComponent*> CompoList;	// コンポーネントリスト
+	hash_map compoList;
 }; 
 
 
