@@ -31,10 +31,11 @@ void CUi2d::Init(ui2d::SETING & seting, PRIORITY pri)
 	this->AddComponent<_MYSTD Transform2D>();
 	this->AddComponent<_MYSTD Image2D>();
 	GetComponent<_MYSTD Transform2D>();
-	
+	_MYSTD Image2D *a = GetComponent<_MYSTD Image2D>();
+
 	RemoveComponent<_MYSTD Image2D>();
 
-	auto a = GetComponent<_MYSTD Image2D>();
+	auto b = GetComponent<_MYSTD Image2D>();
 	//Destroy(test);
 }
 

@@ -45,11 +45,14 @@ public:
 	template<typename T>
 	T* AddComponent()
 	{
-		auto addTypeName = typeid(T).name();
+		auto key = typeid(T).name();
 
-		for (auto itr : compoList)
-			if (itr.first == addTypeName)
-				return nullptr;
+		auto itr = compoList.find(key);
+
+		if (itr != compoList.end())
+		{
+		return nullptr;
+		}
 
 		T* pNew = new T();
 
@@ -62,7 +65,9 @@ public:
 
 		pComponent->Start();
 
-		compoList.insert(hash_map::value_type(addTypeName, pComponent));
+		compoList.insert(hash_map::value_type(key, pComponent));
+
+		std::cout << "AddComponent => " << key << std::endl;
 
 		return pNew;
 	}
@@ -71,14 +76,42 @@ public:
 	template<typename T>
 	T* GetComponent()
 	{
-		auto base = compoList[typeid(T).name()];
+		auto key = typeid(T).name();
 
-		if (base == nullptr)
+		auto itr = compoList.find(key);
+
+		if (itr != compoList.end())
+		{
+			auto base = compoList.at(key);
+
+			if (base == nullptr)
+				return nullptr;
+
+			T* pComp = dynamic_cast<T*>(base);
+
+			return pComp;
+		}
+		else
+		{
 			return nullptr;
+		}
+	}
 
-		T* pComp = dynamic_cast<T*>(base);
+	// コンポーネントの取得
+	IComponent* GetComponent(const char * typeName)
+	{
+		auto itr = compoList.find(typeName);
 
-		return pComp;
+		if (itr != compoList.end())
+		{
+			auto base = compoList.at(typeName);
+
+			if (base == nullptr)
+				return nullptr;
+
+			return base;
+		}
+		return nullptr;
 	}
 
 	// コンポーネントを削除
@@ -87,22 +120,34 @@ public:
 	{
 		auto key = typeid(T).name();
 
-		auto base = compoList[key];
+		auto itr = compoList.find(key);
 
-		if (base == nullptr)
-			return;
+		if (itr != compoList.end())
+		{
+			auto base = compoList.at(key);
 
-		delete base;
+			if (base == nullptr)
+				return;
 
-		compoList.erase(key);
+			delete base;
 
-		base = nullptr;
+			compoList.erase(key);
+
+			base = nullptr;
+		}
 	}
 
 	// コンポーネントを削除
 	template<typename T>
 	void Destroy(T* src)
 	{
+		if (src == nullptr)
+			return;
+
+		delete src;
+		src = nullptr;
+
+		compoList.erase(typeid(T).name());
 	}
 
 private:
