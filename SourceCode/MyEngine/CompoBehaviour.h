@@ -50,9 +50,7 @@ public:
 		auto itr = compoList.find(key);
 
 		if (itr != compoList.end())
-		{
-		return nullptr;
-		}
+			return nullptr;
 
 		T* pNew = new T();
 

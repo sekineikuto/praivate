@@ -35,13 +35,12 @@ public:
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 
-	virtual void AttachComponent(IComponent * pComp) = 0;
+	// virtual void AttachComponent(IComponent * pComp) = 0;
 
 	// virtual void DetachComponent() = 0;
 
 	CCompoBehaviour *parent;	// 親情報
 	bool             enabled;	// アクティブを設定
-	std::string      type;		// コンポーネントの型
 private:
 protected:
 
@@ -58,8 +57,6 @@ public:
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 
-	virtual void AttachComponent(IComponent * pComp) = 0;
-
 private:
 protected:
 
@@ -75,8 +72,6 @@ public:
 	virtual void Start(void) = 0;
 	virtual void Update(void) = 0;
 	virtual void Draw(void) {}
-
-	virtual void AttachComponent(IComponent * pComp) = 0;
 
 private:
 protected:
